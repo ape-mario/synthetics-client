@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset='utf-8'>
+	<title>Cap</title>
+	<meta name="description" content="">
+	<meta name="application-name" content="Cap">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no,minimal-ui">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<link rel="icon" href="assets/favicon.ico?v=1.1"> 
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+	<link rel="manifest" href="assets/site.webmanifest">
+	<link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#1BFF49">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#080c10">
+
+	<meta name="twitter:card" content="summary"/>
+	<meta name="twitter:title" content="Cap"/>
+	<meta name="twitter:image" content="https://cap.finance/assets/logo-square-256.png"/>
+	<meta name="twitter:site" content="@CapDotFinance"/>
+	<meta property="og:title" content="Cap"/>
+	<meta property="og:site_name" content="cap.finance"/>
+	<meta property="og:image" content="https://cap.finance/assets/logo-square-256.png" />
+	
+	<style>
+		html {
+		  box-sizing: border-box;
+		  font-size: 1em;
+		  line-height: 1.15; /* 1 */
+		  -webkit-text-size-adjust: 100%; /* 2 */
+		}
+
+		*, *:before, *:after {
+		  box-sizing: inherit;
+		}
+
+		body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+		  margin: 0;
+		  padding: 0;
+		  font-weight: normal;
+		}
+
+		ol, ul {
+		  list-style: none;
+		}
+
+		img {
+		  max-width: 100%;
+		  height: auto;
+		}
+	</style>
+
+	<link rel='stylesheet' href='/bundle.css'>
+
+	<script defer src='/main.js' type="module"></script>
+
+	<!-- dynamic import support for legacy browsers -->
+	<script type="nomodule" data-main="/main.js">
+		!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.dimport=e()}(this,function(){var t=/(^|;|\s+)import\s*['"]([^'"]+)['"](?=($|;|\s))/gi,e=/(^|[;\s]+)?import\s*(\*\s*as)?\s*(\w*?)\s*,?\s*(?:\{([\s\S]*?)\})?\s*from\s*['"]([^'"]+)['"];?/gi;function r(t,e){for(var r=[];t.length;)r.push(t.shift().trim().replace(/ as /g,":"));return"const { "+r.join(", ")+" } = "+e+";"}var n={};function o(n,o){window.dimport=i;var s,u=[],p=[],c={exports:{}},f=function(n,o){return n.replace(t,"$1"+(o=o||"require")+"('$2')").replace(e,function(t,e,n,i,s,u){return(e||"")+function(t,e,n,o){return e=o+"('"+e+"')",t.length&&!n?r(t,e):"const "+n+" = "+e+";"+(t.length?"\n"+r(t,n):"")}(s?s.split(","):[],u,i,o)})}(o.replace(/(^|\s|;)(import\s*)(\(|.*from\s*|)['"]([^'"]+)['"];?/gi,function(t,e,r,o,i){return i="'"+new URL(i,n).href+"'",e+r+o+("("==o?i:"'$dimport["+(p.push(i)-1)+"]';")}).replace(/(^|\s|;)(import)(?=\()/g,"$1window.dimport").replace(/export default/,"module.exports =").replace(/export\s+(const|function|class|let|var)\s+(.+?)(?=(\(|\s|=))/gi,function(t,e,r){return u.push(r)&&e+" "+r}).replace(/export\s*\{([\s\S]*?)\}/gi,function(t,e){for(var r,n="",o=e.split(",");r=o.shift();)n+="exports."+((r=r.trim().split(" as "))[1]||r[0])+" = "+r[0]+";\n";return n}),"eval");for(u.sort();s=u.shift();)f+="\nexports."+s+" = "+s+";";return Promise.resolve(new Function("module","exports",p.length?"return Promise.all(["+p.join()+"].map(window.dimport)).then(function($dimport){"+f+"});":f)(c,c.exports)).then(function(){return c.exports.default=c.exports.default||c.exports,c.exports})}function i(t){t=new URL(t,location.href).href;try{return new Function("return import('"+t+"')").call()}catch(e){return n[t]?Promise.resolve(n[t]):fetch(t).then(function(t){return t.text()}).then(o.bind(o,t)).then(function(e){return n[t]=e})}}var s=void 0!==document&&document.currentScript||document.querySelector("script[data-main]");return s&&(s.text?o(location.href,s.text):(s=s.getAttribute("data-main"))&&i(s)),i});
+	</script>
+
+</head>
+
+<body>
+</body>
+</html>
