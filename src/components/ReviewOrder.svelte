@@ -20,7 +20,7 @@
 
 	let loading;
 	function submitOrder() {
-
+		loading = true;
 		if (data.side == 'buy') {
 			submitBuyOrder({
 				symbol: data.product,
