@@ -1,6 +1,5 @@
 import { CONTRACTS } from '../constants.js'
-import { keccak256 } from 'js-sha3';
-import { get } from 'svelte/store'
+import { keccak256 } from 'js-sha3'
 import { user } from '../../stores/user.js'
 import { encodeMethodSignature, encodeBytes32, decodeAddress } from '../abi.js'
 
@@ -14,7 +13,7 @@ export default function getProductAddress(params) {
 	} = params;
 
 	if (cache[product]) {
-		return new Promise((resolve, reject) => { resolve(cache[address]) });
+		return new Promise((resolve, reject) => { resolve(cache[product]) });
 	}
 
 	return ethereum.request({

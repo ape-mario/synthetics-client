@@ -1,7 +1,6 @@
 import { readable, writable, derived, get } from 'svelte/store'
 import { user } from './user'
 import { CONTRACTS, UNIT } from '../lib/constants.js'
-import { formatBytes32String } from '@ethersproject/strings'
 import getMaxAmount from '../lib/eth/getMaxAmount.js'
 import getProductBalance from '../lib/eth/getProductBalance.js'
 import getProductAddress from '../lib/eth/getProductAddress.js'

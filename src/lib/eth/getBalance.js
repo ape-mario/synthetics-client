@@ -4,8 +4,6 @@ import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
 import { encodeMethodSignature, encodeAddress } from '../abi.js'
 
-// TODO use BN to return a BN balance here
-
 const KECCAK_BALANCE = keccak256('balanceOf(address)');
 
 export default function getBalance(params) {
@@ -19,5 +17,5 @@ export default function getBalance(params) {
 			to: address,
 			data: encodeMethodSignature(KECCAK_BALANCE) + encodeAddress(get(user))
 		}, "latest"]
-	});
+	}).then(BigInt);
 }

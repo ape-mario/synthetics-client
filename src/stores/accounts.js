@@ -2,10 +2,8 @@ import { readable, writable, get, derived } from 'svelte/store'
 import { CONTRACTS } from '../lib/constants.js'
 import { currencies, decimals, symbols } from './currencies'
 import { user } from './user'
-import { toUtf8String } from '@ethersproject/strings'
 import { getAssetsAllowance } from '../lib/eth/getAllowance.js'
 import getBalance from '../lib/eth/getBalance.js'
-import BN from 'bn.js'
 
 let defaultAccount = JSON.parse(localStorage.getItem('selected-currency') || null) || {currency: 'DAI'};
 export const selectedAccount = writable(defaultAccount);
@@ -15,19 +13,15 @@ selectedAccount.setPersist = (obj) => {
 	selectedAccount.set(obj);
 }
 
-export const balances = derived([user, currencies, decimals], ([$user, $currencies, $decimals], set) => {
+export const balances = derived([user, currencies], ([$user, $currencies], set) => {
 	if (!$user) return;
 	if (!$currencies) return;
-	if (!$decimals) return;
 
 	let _balances = {}
 
 	for (const currency of $currencies) {
-		getBalance(currency).then((result) => {
-			console.log('original value:', new BN(result.substring(2), 16).toString());
-			console.log('decimals:', $decimals[currency.address].toString());
-
-			_balances[currency.address] = new BN(result.substring(2), 16); //.div($decimals[currency.address]).toString();
+		getBalance(currency).then((balance) => {
+			_balances[currency.address] = balance;
 
 			if (Object.keys(_balances).length == $currencies.length) {
 				console.log('balances###:', _balances);
@@ -39,10 +33,9 @@ export const balances = derived([user, currencies, decimals], ([$user, $currenci
 	}
 });
 
-export const allowances = derived([user, currencies, decimals], ([$user, $currencies, $decimals], set) => {
+export const allowances = derived([user, currencies], ([$user, $currencies], set) => {
 	if (!$user) return;
 	if (!$currencies) return;
-	if (!$decimals) return;
 
 	let _allowances = {}
 
@@ -60,7 +53,7 @@ export const allowances = derived([user, currencies, decimals], ([$user, $curren
 	}
 });
 
-export const accounts = derived([currencies, balances, allowances, symbols], ([$currencies, $balances, $allowances, $symbols], set) => {
+export const accounts = derived([currencies, balances, allowances, symbols, decimals], ([$currencies, $balances, $allowances, $symbols, $decimals], set) => {
 	console.log('$currencies:', $currencies);
 	console.log('$balances:', $balances);
 	console.log('$allowances:', $allowances);
@@ -69,8 +62,9 @@ export const accounts = derived([currencies, balances, allowances, symbols], ([$
 	const createAccount = (currency) => ({
 		currency: ($symbols || {[currency.address]: currency.address.substring(0,8)})[currency.address],
 		address: currency.address,
-		balance: ($balances || {})[currency.address],
-		allowance: ($allowances || {})[currency.address]
+		balance: ($balances || {})[currency.address] || 0n,
+		allowance: ($allowances || {})[currency.address] || 0n,
+		decimals: ($decimals || {})[currency.address] || 18n
 	});
 
 	let accounts = $currencies.map(createAccount);

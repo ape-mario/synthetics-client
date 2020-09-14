@@ -5,11 +5,9 @@ import { user } from '../../stores/user.js'
 import { addresses } from '../../stores/currencies.js'
 import { encodeMethodSignature, encodeBytes32, encodeAddress, encodeUint } from '../abi.js'
 import sign from './sign.js'
-import { prepareForSigning } from './sign.js'
 import getNonce from './getNonce.js'
 import getName from './getName.js'
 import approveAmount from './approveAmount.js'
-import BN from 'bn.js'
 
 // submitBuyOrder(symbol: bytes32, payAmount: uint256, currency: address, deadline: uint256, v: uint8, r: bytes32, s: bytes32)
 const KECCAK_SUBMIT_BUY_ORDER = keccak256('submitBuyOrder(bytes32,uint256,address,uint256,uint8,bytes32,bytes32)');
@@ -45,7 +43,9 @@ export default async function submitBuyOrder(params) {
 		name,
 		version: VERSIONS[currency] || '1',
 		verifyingContract: currencyAddress,
-		data: prepareForSigning(Object.assign({}, params, { verifyingProduct: currency, owner: _user, deadline: '0x' + encodeUint(deadline), nonce }))
+		verifyingProduct: currency,
+		deadline: '0x' + encodeUint(deadline),
+		nonce
 	});
 
 	const { v, r, s } = signature;
@@ -65,7 +65,7 @@ export default async function submitBuyOrder(params) {
 				encodeUint(v) +
 				r.slice(2) +
 				s.slice(2),
-			chainId: 100 // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+			chainId: ethereum.chainId // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
 		}]
 	});
 }

@@ -6,6 +6,8 @@
 	import { hideModal } from '../stores/modals.js'
 	import { selectedAccount, accounts } from '../stores/accounts.js'
 	import updateCurrencies from '../lib/updates/updateCurrencies.js'
+	import { formatBigInt } from '../lib/decimals.js'
+	import { DEFAULT_PRECISION } from '../lib/constants.js'
 
 	onMount(() => {
 		updateCurrencies(0, 0);
@@ -35,15 +37,7 @@
 	</div>
 	<div>
 		<span>Balance</span>
-		<span>{account.balance}</span>
-	</div>
-	<div>
-		<span>Allowance</span>
-		<span>{account.allowance}</span>
-	</div>
-	<div>
-		<span>Currency Name</span>
-		<span>{account.name}</span>
+		<span>{formatBigInt(account.balance, account.decimals, DEFAULT_PRECISION)}</span>
 	</div>
 </DataTable>
 {/each}

@@ -1,7 +1,6 @@
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { encodeMethodSignature } from '../abi.js'
-import BN from 'bn.js'
 
 const KECCAK_DECIMALS = keccak256('decimals()');
 
@@ -25,10 +24,10 @@ export default function getDecimals(params) {
 			data: encodeMethodSignature(KECCAK_DECIMALS)
 		}, "latest"]
 	}).then((result) => {
-		const unit = new BN('10').pow(new BN(result.slice(2), 16));
+		const decimals = BigInt(result);
 
 		// cache
-		decimals_cache[address] = unit;
-		return unit;
+		decimals_cache[address] = decimals;
+		return decimals;
 	});
 }

@@ -3,7 +3,6 @@ import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
 import { encodeMethodSignature, encodeAddress } from '../abi.js'
-import BN from 'bn.js'
 
 const KECCAK_ALLOWANCE = keccak256('allowance(address,address)');
 
@@ -21,7 +20,7 @@ export default function getAllowance(params) {
 			data: encodeMethodSignature(KECCAK_ALLOWANCE) + encodeAddress(owner) + encodeAddress(spender)
 		}, "latest"]
 	})
-	.then(result => new BN(result.substring(2), 16));
+	.then(BigInt);
 }
 
 export function getAssetsAllowance(params) {

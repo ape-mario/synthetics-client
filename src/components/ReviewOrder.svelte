@@ -8,6 +8,8 @@
 	import { showToast } from '../stores/toasts.js'
 	import submitBuyOrder from '../lib/eth/submitBuyOrder.js'
 	import submitSellOrder from '../lib/eth/submitSellOrder.js'
+	import { formatBigInt, parseDecimal } from '../lib/decimals.js'
+	import { DEFAULT_PRECISION } from '../lib/constants.js'
 
 	// from modal
 	export let data;
@@ -24,10 +26,11 @@
 				symbol: data.product,
 				address: data.address,
 				currency: data.currency,
-				amount: data.amount
+				amount: parseDecimal(data.amount, data.decimals)
 			}).then((hash) => {
 				loading = false;
 				showToast('Submitted and awaiting confirmation.', 'success');
+				setTimeout(hideModal, 200);
 			}).catch((error) => {
 				loading = false;
 				console.error(error);
@@ -39,11 +42,11 @@
 				symbol: data.product,
 				address: data.address,
 				currency: data.currency,
-				amount: data.amount
+				amount: parseDecimal(data.amount, data.decimals)
 			}).then((hash) => {
 				loading = false;
-				alert('here');
 				showToast('Submitted and awaiting confirmation.', 'success');
+				setTimeout(hideModal, 200);
 			}).catch((error) => {
 				loading = false;
 				console.error(error);

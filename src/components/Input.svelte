@@ -26,7 +26,7 @@
 </style>
 
 {#if _type == 'number'}
-<input type='number' step='0.01' {disabled} min={min} max={max} required autofocus placeholder={placeholder || ''} bind:value={value}>
+<input type='text' inputmode='numeric' pattern='\d+(?:\.\d*)?' step='0.01' {disabled} min={min} max={max} required autofocus placeholder={placeholder || ''} bind:value={value}>
 {:else}
 <input type='text' {disabled} required autofocus placeholder={placeholder || ''} bind:value={value}>
 {/if}

@@ -8,7 +8,7 @@ const EIP712Domain = [
 	{ name: 'verifyingContract', type: 'address' }
 ]
 
-export function prepareForSigning(params) {
+function prepareForSigning(params) {
 	const {
 		owner,
 		nonce,
@@ -40,9 +40,10 @@ export default function sign(params) {
 		owner,
 		name,
 		version,
-		verifyingContract,
-		data
+		verifyingContract
 	} = params;
+
+	const data = prepareForSigning(params);
 
     const typedData = JSON.stringify({
       types: {

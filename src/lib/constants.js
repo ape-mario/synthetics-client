@@ -1,6 +1,4 @@
 import { keccak256 } from 'js-sha3';
-import { formatBytes32String } from '@ethersproject/strings'
-import BN from 'bn.js'
 
 export const CONTRACTS = {
 	CAP_ASSETS: '0x0290FB167208Af455bB137780163b7B7a9a10C16'.toLowerCase(),
@@ -8,16 +6,14 @@ export const CONTRACTS = {
 	CAP_CLP: '0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec'.toLowerCase()
 };
 
-export const SYNTH_DECIMALS = 18;
-export const UNIT = new BN(10).pow(new BN(SYNTH_DECIMALS));
+export const SYNTHS_DECIMALS = 18n;
+export const SYNTHS_PRECISION = 6n;
+export const SYNTHS_UNIT = 10n ** SYNTHS_DECIMALS;
 
-export const DECIMALS = {
-	'USDC': 6,
-	'USDT': 6,
-	'DAI': 18,
-	'CAP': 18
-};
+export const DEFAULT_DECIMALS = 18n;
+export const DEFAULT_PRECISION = 2n;
+
+export const BIGINT_ZERO = 0n;
 
 export const MAX_UINT256 = '0x' + 'f'.repeat(64);
-
-export const EMPTY_BYTES32 = formatBytes32String('');
+export const EMPTY_BYTES32 = '0x' + '0'.repeat(64);
