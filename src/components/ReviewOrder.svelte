@@ -10,7 +10,7 @@
 	import submitBuyOrder from '../lib/eth/submitBuyOrder.js'
 	import submitSellOrder from '../lib/eth/submitSellOrder.js'
 	import { formatBigInt, parseDecimal } from '../lib/decimals.js'
-	import { DEFAULT_PRECISION } from '../lib/constants.js'
+	import { DEFAULT_PRECISION, SYNTHS_PRECISION } from '../lib/constants.js'
 
 	// from modal
 	export let data;
@@ -35,7 +35,7 @@
 				product: data.product,
 				side: data.side,
 				currency: data.currency,
-				amount: data.amount
+				amount: formatBigInt(params.amount, data.decimals, (data.side == 'buy') ? DEFAULT_PRECISION : SYNTHS_PRECISION)
 			});
 			showToast('Submitted and awaiting confirmation.', 'success');
 			setTimeout(hideModal, 200);
