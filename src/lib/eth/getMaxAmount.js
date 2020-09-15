@@ -4,10 +4,14 @@ import { encodeMethodSignature, encodeBytes32, decodeUint } from '../abi.js'
 
 const KECCAK_MAX_AMOUNT = keccak256('maxAmount(bytes32)');
 
+const max_amount_cache = {}
+
 export default function getMaxAmount(params) {
 	const {
 		product
 	} = params;
+
+	if (max_amount_cache[product]) return Promise.resolve(max_amount_cache[product]);
 
 	return ethereum.request({
 		method: 'eth_call',

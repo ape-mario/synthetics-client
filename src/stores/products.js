@@ -18,27 +18,24 @@ selectedProduct.setPersist = (obj) => {
 
 export const selectedSide = writable('buy');
 
-export const selectedProductMaxAmount = derived([selectedProduct], ([$selectedProduct], set) => {
+export const selectedProductMaxAmount = derived([selectedProduct], async ([$selectedProduct], set) => {
 	if (!$selectedProduct) return;
 
-	getMaxAmount($selectedProduct).then((maxAmount) => {
-		set(maxAmount);
-	});
+	const maxAmount = getMaxAmount($selectedProduct);
+	set(maxAmount);
 });
 
-export const selectedProductBalance = derived([selectedProduct, user], ([$selectedProduct, $user], set) => {
+export const selectedProductBalance = derived([selectedProduct, user], async ([$selectedProduct, $user], set) => {
 	if (!$selectedProduct) return;
 	if (!$user) return;
 
-	getProductBalance($selectedProduct).then((balance) => {
-		set(balance);
-	});
+	const balance = await getProductBalance($selectedProduct);
+	set(balance);
 });
 
-export const selectedProductAddress = derived([selectedProduct], ([$selectedProduct], set) => {
+export const selectedProductAddress = derived([selectedProduct], async ([$selectedProduct], set) => {
 	if (!$selectedProduct) return;
 
-	getProductAddress($selectedProduct).then((address) => {
-		set(address);
-	});
+	const address = await getProductAddress($selectedProduct);
+	set(address);
 });

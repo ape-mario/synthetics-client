@@ -12,9 +12,7 @@ export default function getProductAddress(params) {
 		product
 	} = params;
 
-	if (cache[product]) {
-		return new Promise((resolve, reject) => { resolve(cache[product]) });
-	}
+	if (cache[product]) return Promise.resolve(cache[product]);
 
 	return ethereum.request({
 		method: 'eth_call',

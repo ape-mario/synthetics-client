@@ -19,41 +19,25 @@
 	let price = '...', rate;
 
 	let loading;
-	function submitOrder() {
+	async function submitOrder() {
 		loading = true;
-		if (data.side == 'buy') {
-			submitBuyOrder({
-				symbol: data.product,
-				address: data.address,
-				currency: data.currency,
-				amount: parseDecimal(data.amount, data.decimals)
-			}).then((hash) => {
-				loading = false;
-				showToast('Submitted and awaiting confirmation.', 'success');
-				setTimeout(hideModal, 200);
-			}).catch((error) => {
-				loading = false;
-				console.error(error);
-				// console.log(getMessageFromCode(error.code));
-				showToast(error && error.message);
-			});
-		} else {
-			submitSellOrder({
-				symbol: data.product,
-				address: data.address,
-				currency: data.currency,
-				amount: parseDecimal(data.amount, data.decimals)
-			}).then((hash) => {
-				loading = false;
-				showToast('Submitted and awaiting confirmation.', 'success');
-				setTimeout(hideModal, 200);
-			}).catch((error) => {
-				loading = false;
-				console.error(error);
-				showToast(error && error.message);
-			});
+		const params = {
+			symbol: data.product,
+			address: data.address,
+			currency: data.currency,
+			amount: parseDecimal(data.amount, data.decimals)
 		}
-		
+		try {
+			const txhash = (data.side == 'buy') ? await submitBuyOrder(params) : submitSellOrder(params);
+			showToast('Submitted and awaiting confirmation.', 'success');
+			setTimeout(hideModal, 200);
+		} catch (e) {
+			console.error(e);
+			showToast(e && e.message);
+		} finally {
+			loading = false;
+		}
+
 	}
 
 </script>

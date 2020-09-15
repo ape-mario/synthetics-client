@@ -13,9 +13,7 @@ export default function getDecimals(params) {
 		address // erc20 currency address
 	} = params;
 
-	if (decimals_cache[address]) {
-		return new Promise((resolve, reject) => { resolve(decimals_cache[address]) });
-	}
+	if (decimals_cache[address]) return new Promise.resolve(decimals_cache[address]);
 
 	return ethereum.request({
 		method: 'eth_call',

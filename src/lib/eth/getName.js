@@ -13,9 +13,7 @@ export default function getName(params) {
 		address // erc20 currency address
 	} = params;
 
-	if (names_cache[address]) {
-		return new Promise((resolve, reject) => { resolve(names_cache[address]) });
-	}
+	if (names_cache[address]) return Promise.resolve(names_cache[address]);
 
 	return ethereum.request({
 		method: 'eth_call',

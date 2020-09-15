@@ -13,44 +13,22 @@ selectedAccount.setPersist = (obj) => {
 	selectedAccount.set(obj);
 }
 
-export const balances = derived([user, currencies], ([$user, $currencies], set) => {
+export const balances = derived([user, currencies], async ([$user, $currencies], set) => {
 	if (!$user) return;
 	if (!$currencies) return;
 
-	let _balances = {}
-
-	for (const currency of $currencies) {
-		getBalance(currency).then((balance) => {
-			_balances[currency.address] = balance;
-
-			if (Object.keys(_balances).length == $currencies.length) {
-				console.log('balances###:', _balances);
-				set(_balances);
-			}
-		}).catch((error) => {
-			console.error('Ethereum Provider error', currency, error);
-		});
-	}
+	const results = await Promise.allSettled($currencies.map(getBalance));
+	const _balances = results.map((r, i) => ({[$currencies[i].address]: (r.value || 0n)}));
+	set(Object.assign({}, ..._balances));
 });
 
-export const allowances = derived([user, currencies], ([$user, $currencies], set) => {
+export const allowances = derived([user, currencies], async ([$user, $currencies], set) => {
 	if (!$user) return;
 	if (!$currencies) return;
 
-	let _allowances = {}
-
-	for (const currency of $currencies) {
-		getAssetsAllowance(currency).then((allowance) => {
-			_allowances[currency.address] = allowance;
-
-			if (Object.keys(_allowances).length == $currencies.length) {
-				console.log('allowances###:', _allowances);
-				set(_allowances);
-			}
-		}).catch((error) => {
-			console.error('Ethereum Provider error', currency, error);
-		});
-	}
+	const results = await Promise.allSettled($currencies.map(getAssetsAllowance));
+	const _allowances = results.map((r, i) => ({[$currencies[i].address]: (r.value || 0n)}));
+	set(Object.assign({}, ..._allowances));
 });
 
 export const accounts = derived([currencies, balances, allowances, symbols, decimals], ([$currencies, $balances, $allowances, $symbols, $decimals], set) => {

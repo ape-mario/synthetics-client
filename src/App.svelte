@@ -24,9 +24,10 @@
 		console.log('product:', product);
 		if (product == 'accounts') {
 			showModal('accounts', {});
-		}
-	 	else if (product == 'assets') {
+		} else if (product == 'assets') {
 			showModal('products', {});
+		} else {
+			selectedProduct.setPersist({product});
 		}
 		next();
 	});

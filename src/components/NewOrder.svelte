@@ -25,7 +25,6 @@
 		});
 
 		amount = undefined;
-
 	}
 
 </script>
