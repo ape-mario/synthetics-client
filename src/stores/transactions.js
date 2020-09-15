@@ -18,6 +18,12 @@ recentEvents.addPersist = function (new_events) {
 	for (const event of new_events) {
 		Object.assign(_recentEvents, event);
 	}
+	// cleanup oldest event
+	const ids = Object.keys(_recentEvents);
+	if (ids.length > 10) {
+		let toDelete = ids.sort()[0];
+		delete _recentEvents[toDelete];
+	}
 	localStorage.setItem('recent-events', JSON.stringify(_recentEvents));
 	recentEvents.set(_recentEvents);
 }
@@ -26,7 +32,9 @@ export const recentTransactions = writable(JSON.parse(localStorage.getItem('rece
 
 recentTransactions.unshiftPersist = function (transaction) {
 	const _recentTransactions = get(recentTransactions);
-	_recentTransactions.unshift(Object.assign({user: get(user)}, transaction));
+	if (_recentTransactions.unshift(Object.assign({user: get(user)}, transaction)) > 10) {
+		_recentTransactions.pop();
+	}
 	localStorage.setItem('recent-transactions', JSON.stringify(_recentTransactions));
 	recentTransactions.set(_recentTransactions);
 }
