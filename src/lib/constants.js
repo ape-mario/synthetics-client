@@ -6,6 +6,15 @@ export const CONTRACTS = {
 	CAP_CLP: '0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec'.toLowerCase()
 };
 
+export const ETHERSCAN_URI = {
+	'0x1': 'https://etherscan.io',
+	'0x3': 'https://ropsten.etherscan.io',
+	'0x2a': 'https://kovan.etherscan.io',
+	'0x4': 'https://rinkeby.etherscan.io',
+	'0x5': 'https://goerli.etherscan.io',
+	'0x64': 'http://localhost:7777'
+}
+
 export const SYNTHS_DECIMALS = 18n;
 export const SYNTHS_PRECISION = 6n;
 export const SYNTHS_UNIT = 10n ** SYNTHS_DECIMALS;

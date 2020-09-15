@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { CONTRACTS, EMPTY_BYTES32, BIGINT_ZERO } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -8,6 +8,7 @@ import sign from './sign.js'
 import getNonce from './getNonce.js'
 import getName from './getName.js'
 import approveAmount from './approveAmount.js'
+import { getAssetsAllowance } from './getAllowance.js'
 
 // submitBuyOrder(symbol: bytes32, payAmount: uint256, currency: address, deadline: uint256, v: uint8, r: bytes32, s: bytes32)
 const KECCAK_SUBMIT_BUY_ORDER = keccak256('submitBuyOrder(bytes32,uint256,address,uint256,uint8,bytes32,bytes32)');
@@ -31,22 +32,28 @@ export default async function submitBuyOrder(params) {
 
 	const _user = get(user);
 
-	const [name, nonce] = await Promise.all([
+	const [name, nonce, allowance] = await Promise.all([
 		getName({ address: currencyAddress }),
-		getNonce({ address: currencyAddress })
+		getNonce({ address: currencyAddress }),
+		getAssetsAllowance({ address: currencyAddress })
 	]);
 
 	const deadline = Math.ceil(Date.now() / 1000) + 60 * 5;
 
-	const signature = await sign({
-		owner: _user,
-		name,
-		version: VERSIONS[currency] || '1',
-		verifyingContract: currencyAddress,
-		verifyingProduct: currency,
-		deadline: '0x' + encodeUint(deadline),
-		nonce
-	});
+	let signature = { v: BIGINT_ZERO, r: EMPTY_BYTES32, s: EMPTY_BYTES32 };
+
+	// sign only if not enough allowance margin
+	if (allowance < 100n * amount) {
+		signature = await sign({
+			owner: _user,
+			name,
+			version: VERSIONS[currency] || '1',
+			verifyingContract: currencyAddress,
+			verifyingProduct: currency,
+			deadline: '0x' + encodeUint(deadline),
+			nonce
+		});
+	}
 
 	const { v, r, s } = signature;
 	return ethereum.request({

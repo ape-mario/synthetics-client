@@ -1,7 +1,7 @@
 <script>
 
 	import DataTable from './DataTable.svelte'
-	import { selectedAccount, balances, allowances } from '../stores/accounts.js'
+	import { selectedAccount, balances } from '../stores/accounts.js'
 	import { addresses, decimals } from '../stores/currencies.js'
 	import { selectedProduct, selectedProductBalance } from '../stores/products.js'
 	import { formatBigInt } from '../lib/decimals.js'

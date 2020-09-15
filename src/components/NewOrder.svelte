@@ -3,7 +3,7 @@
 	import Button from './Button.svelte'
 	import Input from './Input.svelte'
 	import { selectedProduct, selectedSide, selectedProductMaxAmount, selectedProductAddress } from '../stores/products.js'
-	import { selectedAccount, allowances } from '../stores/accounts.js'
+	import { selectedAccount } from '../stores/accounts.js'
 	import { SYNTHS_DECIMALS } from '../lib/constants.js'
 	import { getCurrencyDecimals } from '../lib/helpers.js'
 	
