@@ -56,8 +56,6 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 					// not pending
 					status = parseInt(tx_receipt.status) ? 'queued' : 'failed';
 
-					if (!parseInt(tx_receipt.status)) console.log('failed_tx_receipt:', tx_receipt);
-
 					// extract orderId from emitted event
 					const _user = '0x' + $recentTransactions[index].user.slice(2).padStart(64, 0);
 					const orderSubmittedEventLogs = tx_receipt.logs.filter(log => types.includes(log.topics[0]) && log.topics[1] == _user);

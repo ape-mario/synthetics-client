@@ -42,7 +42,9 @@ export default function monitorEvents() {
 	setInterval(async () => {
 		const logs = await getFilterChanges({ addresses: [ CONTRACTS.CAP_ASSETS ], types, user: '0x' + get(user).slice(2).padStart(64, 0) });
 		const events = logs.map(extractLogData);
-		recentEvents.addPersist(events);
+		if (events.length > 0) {
+			recentEvents.addPersist(events);
+		}
 	}, 5000)
 
 }

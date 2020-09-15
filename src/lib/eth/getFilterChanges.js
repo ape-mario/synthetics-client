@@ -9,7 +9,6 @@ export default async function getFilterChanges(params) {
 	} = params;
 
 	const filter_id = await newFilter(params);
-	console.log('getFilterChanges triggered:', filter_id);
 
 	const logs = await ethereum.request({
 		method: 'eth_getFilterChanges',
