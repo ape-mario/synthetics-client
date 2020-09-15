@@ -8,7 +8,7 @@ export default function getCurrencies() {
 	return ethereum.request({
 		method: 'eth_call',
 		params: [{
-			to: CONTRACTS.CAP_CLP,
+			to: CONTRACTS.CAP_ASSETS,
 			data: encodeMethodSignature(KECCAK_GET_CURRENCIES)
 		}, 'latest']
 	}).then((result) => {

@@ -1,9 +1,7 @@
 import { keccak256 } from 'js-sha3';
 
 export const CONTRACTS = {
-	CAP_ASSETS: '0x0290FB167208Af455bB137780163b7B7a9a10C16'.toLowerCase(),
-	// TODO we only use CLP to get accepted currencies we should probably expose that in CAP_ASSETS
-	CAP_CLP: '0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec'.toLowerCase()
+	CAP_ASSETS: '0x0290FB167208Af455bB137780163b7B7a9a10C16'.toLowerCase()
 };
 
 export const ETHERSCAN_URI = {
