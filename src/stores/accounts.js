@@ -22,6 +22,13 @@ export const balances = derived([user, currencies, transactions, recentEvents], 
 	set(Object.assign({}, ..._balances));
 });
 
+export const selectedAccountBalance = derived([selectedAccount, balances, addresses], ([$selectedAccount, $balances, $addresses]) => {
+	if (!$balances) return 0n;
+	if (!$addresses) return 0n;
+
+	return $balances[$addresses[$selectedAccount.currency]];
+})
+
 export const accounts = derived([currencies, balances, symbols, decimals], ([$currencies, $balances, $symbols, $decimals], set) => {
 	console.log('$currencies:', $currencies);
 	console.log('$balances:', $balances);
