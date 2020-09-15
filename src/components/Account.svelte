@@ -30,6 +30,6 @@
 <DataTable title={'Account (' + $selectedProduct.product + ')'}>
 	<div>
 		<span class='has-tooltip' data-tooltip='Current product balance.' tabindex='0'>Balance</span>
-		<span>{formatBigInt($selectedProductBalance || BIGINT_ZERO, SYNTHS_DECIMALS, SYNTHS_PRECISION)}</span>
+		<span>{$selectedProductBalance != undefined && formatBigInt($selectedProductBalance || BIGINT_ZERO, SYNTHS_DECIMALS, SYNTHS_PRECISION) || '...'}</span>
 	</div>
 </DataTable>

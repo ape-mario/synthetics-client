@@ -10,7 +10,7 @@
 	import { DEFAULT_PRECISION } from '../lib/constants.js'
 
 	onMount(() => {
-		updateCurrencies(0, 0);
+		window.ethereum && updateCurrencies(0, 0);
 	});
 
 	function selectAccount(account) {

@@ -8,7 +8,7 @@
 	import updateProducts from '../lib/updates/updateProducts.js'
 
 	onMount(() => {
-		updateProducts();
+		window.ethereum && updateProducts();
 	});
 
 	function selectProduct(p) {

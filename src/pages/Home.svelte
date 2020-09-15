@@ -14,8 +14,10 @@
 	import monitorEvents from '../lib/monitor/monitorEvents.js'
 
 	// updates the list of currencies
-	$: updateCurrencies();
-	$: monitorEvents();
+	if (window.ethereum) {
+		$: updateCurrencies();
+		$: monitorEvents();
+	}
 
 </script>
 

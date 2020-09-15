@@ -20,6 +20,7 @@ selectedProduct.setPersist = (obj) => {
 export const selectedSide = writable('buy');
 
 export const selectedProductMaxAmount = derived([selectedProduct], async ([$selectedProduct], set) => {
+	if (!window.ethereum) return;
 	if (!$selectedProduct) return;
 
 	const maxAmount = getMaxAmount($selectedProduct);
@@ -27,6 +28,7 @@ export const selectedProductMaxAmount = derived([selectedProduct], async ([$sele
 });
 
 export const selectedProductBalance = derived([selectedProduct, user, transactions, recentEvents], async ([$selectedProduct, $user, $transactions, $recentEvents], set) => {
+	if (!window.ethereum) return;
 	if (!$selectedProduct) return;
 	if (!$user) return;
 
@@ -35,6 +37,7 @@ export const selectedProductBalance = derived([selectedProduct, user, transactio
 });
 
 export const selectedProductAddress = derived([selectedProduct], async ([$selectedProduct], set) => {
+	if (!window.ethereum) return;
 	if (!$selectedProduct) return;
 
 	const address = await getProductAddress($selectedProduct);
