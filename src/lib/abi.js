@@ -19,7 +19,7 @@ export function encodeBytes32(value) {
 }
 
 export function decodeUint(bytesStr, offset) {
-	return BigInt('0x' + bytesStr.slice(offset));
+	return BigInt('0x' + bytesStr.slice(offset, offset + 64));
 }
 
 export function decodeString(bytesStr, offset, length) {

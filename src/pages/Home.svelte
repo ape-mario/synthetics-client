@@ -6,13 +6,16 @@
 	import Nav from '../components/Nav.svelte'
 	import Account from '../components/Account.svelte'
 	import NewOrder from '../components/NewOrder.svelte'
+	import Transactions from '../components/Transactions.svelte'
 	import Toast from '../components/Toast.svelte'
 	import Footer from '../components/Footer.svelte'
 	import ModalContainer from '../components/ModalContainer.svelte'
 	import updateCurrencies from '../lib/updates/updateCurrencies.js'
+	import monitorEvents from '../lib/monitor/monitorEvents.js'
 
 	// updates the list of currencies
 	$: updateCurrencies();
+	$: monitorEvents();
 
 </script>
 
@@ -43,6 +46,7 @@
 			<Nav/>
 			<NewOrder/>
 			<Account/>
+			<Transactions/>
 		</div>
 	<!-- {:else}
 		// TODO add page for when metamask is not installed

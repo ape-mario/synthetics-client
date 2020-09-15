@@ -2,6 +2,7 @@ import { readable, writable, get, derived } from 'svelte/store'
 import { CONTRACTS } from '../lib/constants.js'
 import { currencies, decimals, symbols } from './currencies'
 import { user } from './user'
+import { transactions } from './transactions.js'
 import { getAssetsAllowance } from '../lib/eth/getAllowance.js'
 import getBalance from '../lib/eth/getBalance.js'
 
@@ -13,7 +14,7 @@ selectedAccount.setPersist = (obj) => {
 	selectedAccount.set(obj);
 }
 
-export const balances = derived([user, currencies], async ([$user, $currencies], set) => {
+export const balances = derived([user, currencies, transactions], async ([$user, $currencies, $transactions], set) => {
 	if (!$user) return;
 	if (!$currencies) return;
 
