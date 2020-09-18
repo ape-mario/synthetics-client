@@ -1,7 +1,7 @@
 import { keccak256 } from 'js-sha3';
 
 export const CONTRACTS = {
-	CAP_ASSETS: '0x0290FB167208Af455bB137780163b7B7a9a10C16'.toLowerCase()
+	CAP_ASSETS: '0x6eD79Aa1c71FD7BdBC515EfdA3Bd4e26394435cC'.toLowerCase()
 };
 
 export const ETHERSCAN_URI = {
