@@ -1,7 +1,9 @@
 <script>
 
 	export let title = null;
+	export let action = null;
 	export let tool = '';
+	export let separator = false;
 
 </script>
 
@@ -12,7 +14,14 @@
 		align-items: center;
 		margin: 0;
 		border-bottom: 1px solid var(--border-color);
+		border-top: 1px solid var(--border-color);
+	}
+	.header.separator {
 		border-top: 3px solid var(--border-color);
+	}
+	.header .action {
+		cursor: pointer;
+		text-decoration: underline;
 	}
 	.table {
 		margin: 0;
@@ -39,8 +48,11 @@
 </style>
 
 {#if title}
-<div class='header'>
+<div class={separator ? 'header separator' : 'header'}>
 	<div><strong>{title}</strong></div>
+	{#if action}
+		<div class='action' on:click={action.handler}>{action.name}</div>
+	{/if}
 </div>
 {/if}
 

@@ -17,10 +17,7 @@
 </style>
 
 {#if $orders && $orders.length}
-<DataTable>
-	<div class='header'>
-		<span><strong>Recent Orders</strong></span>
-	</div>
+<DataTable title={'Recent Orders'} separator={true}>
 	{#each $orders as order}
 	<div>
 		<!-- <span>{transaction.txhash.substring(0, 8)}</span> -->
