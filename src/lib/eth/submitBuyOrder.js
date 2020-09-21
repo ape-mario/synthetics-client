@@ -1,4 +1,4 @@
-import { CONTRACTS, EMPTY_BYTES32, BIGINT_ZERO } from '../constants.js'
+import { contract, EMPTY_BYTES32, BIGINT_ZERO } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -62,7 +62,7 @@ export default async function submitBuyOrder(params) {
 			nonce: '0x00', // ignored by MetaMask
 			gasPrice: '0x174876E800', // customizable by user during MetaMask confirmation. (100Gwei gas price)
 			gas: '0x30D40', // customizable by user during MetaMask confirmation. (200000 gas limit)
-			to: CONTRACTS.CAP_ASSETS,
+			to: contract('CAP_ASSETS'),
 			from: _user,
 			data: encodeMethodSignature(KECCAK_SUBMIT_BUY_ORDER) +
 				encodeBytes32(symbol) +

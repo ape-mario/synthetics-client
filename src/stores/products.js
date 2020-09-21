@@ -1,7 +1,7 @@
 import { readable, writable, derived, get } from 'svelte/store'
 import { user } from './user.js'
 import { transactions, recentEvents } from './transactions.js'
-import { CONTRACTS, UNIT } from '../lib/constants.js'
+import { UNIT } from '../lib/constants.js'
 import getMaxAmount from '../lib/eth/getMaxAmount.js'
 import getProductBalance from '../lib/eth/getProductBalance.js'
 import getProductAddress from '../lib/eth/getProductAddress.js'

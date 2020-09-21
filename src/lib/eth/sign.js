@@ -1,4 +1,4 @@
-import { CONTRACTS, MAX_UINT256 } from '../constants.js'
+import { contract, MAX_UINT256 } from '../constants.js'
 import { splitSignature } from '@ethersproject/bytes'
 
 const EIP712Domain = [
@@ -19,7 +19,7 @@ function prepareForSigning(params) {
 	// special case for DAI
 	if (verifyingProduct == 'DAI') return [
 		{ name: 'holder', type: 'address', value: owner },
-		{ name: 'spender', type: 'address', value: CONTRACTS.CAP_ASSETS },
+		{ name: 'spender', type: 'address', value: contract('CAP_ASSETS') },
 		{ name: 'nonce', type: 'uint256', value: nonce },
 		{ name: 'expiry', type: 'uint256', value: deadline },
 		{ name: 'allowed', type: 'bool', value: true }
@@ -28,7 +28,7 @@ function prepareForSigning(params) {
 	// Default (used by CapERC20 and USDCv2)
 	return [
 		{ name: 'owner', type: 'address', value: owner },
-		{ name: 'spender', type: 'address', value: CONTRACTS.CAP_ASSETS },
+		{ name: 'spender', type: 'address', value: contract('CAP_ASSETS') },
 		{ name: 'value', type: 'uint256', value: MAX_UINT256 },
 		{ name: 'nonce', type: 'uint256', value: nonce },
 		{ name: 'deadline', type: 'uint256', value: deadline }

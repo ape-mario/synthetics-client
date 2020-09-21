@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -21,7 +21,7 @@ export default function approveAmount(params) {
 			to: address, // Required except during contract publications.
 			from: get(user), // must match user's active address.
 			value: '0x00', // Only required to send ether to the recipient from the initiating external account.
-			data: encodeMethodSignature(KECCAK_APPROVE) + encodeAddress(CONTRACTS.CAP_ASSETS) + encodeUint(amount),
+			data: encodeMethodSignature(KECCAK_APPROVE) + encodeAddress(contract('CAP_ASSETS')) + encodeUint(amount),
 			chainId: 1, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
 		}]
 	});

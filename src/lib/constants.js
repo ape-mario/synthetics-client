@@ -1,8 +1,31 @@
 import { keccak256 } from 'js-sha3';
 
-export const CONTRACTS = {
-	CAP_ASSETS: '0x6eD79Aa1c71FD7BdBC515EfdA3Bd4e26394435cC'.toLowerCase()
+const CONTRACTS = {
+	'0x1': {
+		CAP_ASSETS: ''
+	},
+	'0x3': {
+		CAP_ASSETS: '0x96295783DfF6e0072CcE3d5745069D9d0A2b6d2f'.toLowerCase()
+	},
+	'0x2a': {
+		CAP_ASSETS: ''
+	},
+	'0x4': {
+		CAP_ASSETS: ''
+	},
+	'0x5': {
+		CAP_ASSETS: ''
+	},
+	'0x64': {
+		CAP_ASSETS: '0x6eD79Aa1c71FD7BdBC515EfdA3Bd4e26394435cC'.toLowerCase()
+	}
 };
+
+export function contract(name) {
+	if (!window.ethereum || !ethereum.chainId) return null;
+	console.log('ethereum.chainId:', ethereum.chainId);
+	return CONTRACTS[ethereum.chainId][name];
+}
 
 export const ETHERSCAN_URI = {
 	'0x1': 'https://etherscan.io',

@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -14,7 +14,7 @@ export default function getProductBalance(params) {
 	return ethereum.request({
 		method: 'eth_call',
 		params: [{
-			to: CONTRACTS.CAP_ASSETS,
+			to: contract('CAP_ASSETS'),
 			data: encodeMethodSignature(KECCAK_BALANCE) + encodeBytes32(product) + encodeAddress(get(user))
 		}, "latest"]
 	}).then(BigInt)

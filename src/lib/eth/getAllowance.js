@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -30,7 +30,7 @@ export function getAssetsAllowance(params) {
 
 	return getAllowance({
 		owner: get(user),
-		spender: CONTRACTS.CAP_ASSETS,
+		spender: contract('CAP_ASSETS'),
 		address
 	});
 }

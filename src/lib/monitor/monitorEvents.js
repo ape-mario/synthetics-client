@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
@@ -40,7 +40,7 @@ function extractLogData(log) {
 export default function monitorEvents() {
 
 	setInterval(async () => {
-		const logs = await getFilterChanges({ addresses: [ CONTRACTS.CAP_ASSETS ], types, user: '0x' + get(user).slice(2).padStart(64, 0) });
+		const logs = await getFilterChanges({ addresses: [ contract('CAP_ASSETS') ], types, user: '0x' + get(user).slice(2).padStart(64, 0) });
 		const events = logs.map(extractLogData);
 		if (events.length > 0) {
 			recentEvents.addPersist(events);
