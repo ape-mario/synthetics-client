@@ -1,4 +1,4 @@
-import { CONTRACTS } from '../constants.js'
+import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3'
 import { user } from '../../stores/user.js'
 import { encodeMethodSignature, encodeBytes32, decodeAddress } from '../abi.js'
@@ -17,7 +17,7 @@ export default function getProductAddress(params) {
 	return ethereum.request({
 		method: 'eth_call',
 		params: [{
-			to: CONTRACTS.CAP_ASSETS,
+			to: contract('CAP_ASSETS'),
 			data: encodeMethodSignature(KECCAK_TOKEN) + encodeBytes32(product)
 		}, "latest"]
 	}).then((result) => {

@@ -1,5 +1,4 @@
 import { readable, writable, get, derived } from 'svelte/store'
-import { CONTRACTS } from '../lib/constants.js'
 import { currencies, addresses, decimals, symbols } from './currencies'
 import { user } from './user'
 import { transactions, recentEvents } from './transactions.js'
