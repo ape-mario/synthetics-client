@@ -32,7 +32,9 @@ export default async function submitSellOrder(params) {
 
 	let signature = { v: BIGINT_ZERO, r: EMPTY_BYTES32, s: EMPTY_BYTES32 };
 	// sign only if not enough allowance margin
+	let permit = false;
 	if (allowance < 100n * amount) {
+		permit = true;
 		signature = await sign({
 			owner: _user,
 			name: 'Cap',
@@ -50,7 +52,7 @@ export default async function submitSellOrder(params) {
 		params: [{
 			nonce: '0x00', // ignored by MetaMask
 			gasPrice: '0x174876E800', // customizable by user during MetaMask confirmation. (100Gwei gas price)
-			gas: '0x30D40', // customizable by user during MetaMask confirmation. (200000 gas limit)
+			gas: permit ? '0x493E0' : '0x30D40',
 			to: contract('CAP_ASSETS'),
 			from: _user,
 			data: encodeMethodSignature(KECCAK_SUBMIT_SELL_ORDER) +
