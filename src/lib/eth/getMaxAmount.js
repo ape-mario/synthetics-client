@@ -19,5 +19,11 @@ export default function getMaxAmount(params) {
 			to: contract('CAP_ASSETS'),
 			data: encodeMethodSignature(KECCAK_MAX_AMOUNT) + encodeBytes32(product)
 		}, 'latest']
-	}).then((result) => decodeUint(result, 2));
+	}).then((result) => {
+		const maxAmount = decodeUint(result, 2);
+
+		// cache
+		max_amount_cache[product] = maxAmount;
+		return maxAmount;
+	});
 }

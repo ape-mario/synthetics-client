@@ -23,7 +23,6 @@ const CONTRACTS = {
 
 export function contract(name) {
 	if (!window.ethereum || !ethereum.chainId) return null;
-	console.log('ethereum.chainId:', ethereum.chainId);
 	return CONTRACTS[ethereum.chainId][name];
 }
 

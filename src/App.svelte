@@ -77,7 +77,7 @@
 	}
 
 	:global(.clickable) {
-		cursor: pointer;
+		cursor: pointer !important;
 	}
 
 	/* tooltip */
@@ -119,6 +119,12 @@
 	}
 	/* transition end */
 	:global(.has-tooltip:focus::before, .has-tooltip:focus::after) {
+	    opacity: 1;
+	    transition: all 0.1s ease;
+	    outline: none;
+	}
+	/* transition end */
+	:global(.has-tooltip.hover-tooltip:hover::before, .has-tooltip.hover-tooltip:hover::after) {
 	    opacity: 1;
 	    transition: all 0.1s ease;
 	    outline: none;
