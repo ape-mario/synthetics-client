@@ -15,7 +15,7 @@
 	// from modal
 	export let data;
 
-	console.log('modal data', data);
+	// console.log('modal data', data);
 
 	let price = '...', rate;
 

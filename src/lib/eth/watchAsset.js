@@ -21,7 +21,7 @@ export default async function watchAsset(params) {
 				}
 			}
 		});
-		console.log('asset registered');
+		// console.log('asset registered');
 	} catch (e) {
 		console.error(e);
 	}	

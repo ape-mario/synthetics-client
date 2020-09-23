@@ -12,7 +12,7 @@ export function showModal(name, data) {
 	} else if (name == 'review-order') {
 		data.title = 'Review Order';
 	} 
-	console.log('setting active modal', {name, data});
+	// console.log('setting active modal', {name, data});
 	window.scrollTo(0,0);
 	modalActive.set({name, data});
 }
