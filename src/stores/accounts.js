@@ -29,9 +29,9 @@ export const selectedAccountBalance = derived([selectedAccount, balances, addres
 })
 
 export const accounts = derived([currencies, balances, symbols, decimals], ([$currencies, $balances, $symbols, $decimals], set) => {
-	console.log('$currencies:', $currencies);
-	console.log('$balances:', $balances);
-	console.log('$symbols:', $symbols);
+	// console.log('$currencies:', $currencies);
+	// console.log('$balances:', $balances);
+	// console.log('$symbols:', $symbols);
 
 	const createAccount = (currency) => ({
 		currency: ($symbols || {[currency.address]: currency.address.substring(0,8)})[currency.address],
@@ -41,6 +41,6 @@ export const accounts = derived([currencies, balances, symbols, decimals], ([$cu
 	});
 
 	let accounts = $currencies.map(createAccount);
-	console.log('accounts:', accounts);
+	// console.log('accounts:', accounts);
 	set(accounts);
 });

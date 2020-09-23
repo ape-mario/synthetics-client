@@ -19,9 +19,9 @@
 	});
 	router('/:product', (ctx, next) => {
 		params = ctx.params;
-//		console.log('got params', params);
+		// console.log('got params', params);
 		const { product } = params;
-		console.log('product:', product);
+		// console.log('product:', product);
 		if (product == 'accounts') {
 			showModal('accounts', {});
 		} else if (product == 'assets') {

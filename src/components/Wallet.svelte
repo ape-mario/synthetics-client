@@ -30,7 +30,7 @@
       return;
     };
 
-   console.log('ethereum.chainId', ethereum.chainId);
+   // console.log('ethereum.chainId', ethereum.chainId);
 
     // if (ethereum.chainId && ethereum.chainId != '0x1') {
     //   showToast('Cap only works on Ethereum mainnet. Please switch to the Main Ethereum Network and reload the page.');
@@ -49,7 +49,7 @@
 
     function handleChainChanged(_chainId) {
       // We recommend reloading the page, unless you must do otherwise
-      console.log('_chainId', _chainId);
+      // console.log('_chainId', _chainId);
       // if (_chainId != '0x1') {
       //   showToast('Cap only works on Ethereum mainnet. Please switch back to the Main Ethereum Network.');
       // }
@@ -94,7 +94,7 @@
 
   // For now, 'eth_accounts' will continue to always return an array
   function handleAccountsChanged(accounts) {
-    console.log('handleAccountsChanged', accounts);
+    // console.log('handleAccountsChanged', accounts);
     if (accounts.length === 0) {
       user.set(null);
     } else if (accounts[0] !== $user) {
