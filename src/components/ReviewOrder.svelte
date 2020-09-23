@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte'
 	import { hideModal } from '../stores/modals.js'
 	import { showToast } from '../stores/toasts.js'
-	import { recentTransactions } from '../stores/transactions.js'
+	import { pendingTransactions, recentTransactions } from '../stores/transactions.js'
 	import submitBuyOrder from '../lib/eth/submitBuyOrder.js'
 	import submitSellOrder from '../lib/eth/submitSellOrder.js'
 	import { formatBigInt, parseDecimal } from '../lib/decimals.js'
@@ -30,12 +30,14 @@
 		}
 		try {
 			const txhash = (data.side == 'buy') ? await submitBuyOrder(params) : await submitSellOrder(params);
+			pendingTransactions.unshift(txhash);
 			recentTransactions.unshiftPersist({
 				txhash,
 				product: data.product,
 				side: data.side,
 				currency: data.currency,
-				amount: formatBigInt(params.amount, data.decimals, (data.side == 'buy') ? DEFAULT_PRECISION : SYNTHS_PRECISION)
+				amount: formatBigInt(params.amount, data.decimals, (data.side == 'buy') ? DEFAULT_PRECISION : SYNTHS_PRECISION),
+				timestamp: Date.now()
 			});
 			showToast('Submitted and awaiting confirmation.', 'success');
 			setTimeout(hideModal, 200);
@@ -45,7 +47,6 @@
 		} finally {
 			loading = false;
 		}
-
 	}
 
 </script>
