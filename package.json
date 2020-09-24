@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "devipfs": "npm run build && ipd build",
     "start": "sirv build --single"
   },
   "author": "cap.finance",
