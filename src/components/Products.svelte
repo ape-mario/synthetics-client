@@ -6,7 +6,7 @@
 
 	function selectProduct(p) {
 		selectedProduct.setPersist(p); 
-		window.history.pushState('', document.title, '/' + p.product);
+		window.history.pushState('', document.title, '/#/' + p.product);
 		setTimeout(() => {hideModal()}, 300);
 	}
 
