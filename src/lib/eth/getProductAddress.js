@@ -22,7 +22,9 @@ export default function getProductAddress(params) {
 		}, "latest"]
 	}).then((result) => {
 		const address = decodeAddress(result, 2);
-		cache[product] = address;
+		if (address.length > 2) {
+			cache[product] = address;
+		}
 		return address;
 	});
 }

@@ -9,7 +9,7 @@ import getProductAddress from '../lib/eth/getProductAddress.js'
 export const products = writable([]);
 export const lastFetched = writable(0);
 
-let defaultAccount = JSON.parse(localStorage.getItem('selected-product') || null) || {product: 'BTC'};
+let defaultAccount = JSON.parse(localStorage.getItem('selected-product') || null) || {product: 'AAPL'};
 export const selectedProduct = writable(defaultAccount);
 
 selectedProduct.setPersist = (obj) => {
