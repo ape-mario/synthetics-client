@@ -5,7 +5,7 @@ export default async function getFilterChanges(params) {
 	const {
 		addresses,
 		types,
-		user
+		users
 	} = params;
 
 	const filter_id = await newFilter(params);
@@ -16,7 +16,7 @@ export default async function getFilterChanges(params) {
 	});
 
 	return logs.filter((log) => {
-		return !log.removed && types.includes(log.topics[0]) && log.topics[1] == user
+		return !log.removed && types.includes(log.topics[0]) && users.includes(log.topics[1])
 	});
 
 }
