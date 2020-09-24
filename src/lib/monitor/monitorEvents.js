@@ -2,7 +2,7 @@ import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
-import { recentEvents } from '../../stores/transactions.js'
+import { recentTransactions, recentEvents } from '../../stores/transactions.js'
 import { decodeUint, decodeString } from '../abi.js'
 import getFilterChanges from '../eth/getFilterChanges.js'
 
@@ -37,10 +37,19 @@ function extractLogData(log) {
 	}
 }
 
+function getUsers() {
+	const users = (get(recentTransactions) || []).map(t => t.user);
+	const _user = get(user);
+	if (_user) {
+		users.push(_user);
+	}
+	return users.filter((u, i) => i == users.indexOf(u)).map(u => '0x' + u.slice(2).padStart(64, 0));
+}
+
 export default function monitorEvents() {
 
 	setInterval(async () => {
-		const logs = await getFilterChanges({ addresses: [ contract('CAP_ASSETS') ], types, user: '0x' + get(user).slice(2).padStart(64, 0) });
+		const logs = await getFilterChanges({ addresses: [ contract('CAP_ASSETS') ], types, users: getUsers() });
 		const events = logs.map(extractLogData);
 		if (events.length > 0) {
 			recentEvents.addPersist(events);
