@@ -1,8 +1,9 @@
 import { readable, writable, get, derived } from 'svelte/store'
 import { currencies, addresses, decimals, symbols } from './currencies'
 import { user } from './user'
-import { transactions, recentEvents } from './transactions.js'
-import getBalance from '../lib/eth/getBalance.js'
+import { chainId } from './network'
+import { transactions, recentEvents } from './transactions'
+import getBalance from '../lib/eth/getBalance'
 
 let defaultAccount = JSON.parse(localStorage.getItem('selected-currency') || null) || {currency: 'DAI'};
 export const selectedAccount = writable(defaultAccount);
@@ -21,7 +22,7 @@ export const balances = derived([user, currencies, transactions, recentEvents], 
 	set(Object.assign({}, ..._balances));
 });
 
-export const selectedAccountBalance = derived([selectedAccount, balances, addresses], ([$selectedAccount, $balances, $addresses]) => {
+export const selectedAccountBalance = derived([chainId, selectedAccount, balances, addresses], ([$chainId, $selectedAccount, $balances, $addresses]) => {
 	if (!$balances) return 0n;
 	if (!$addresses) return 0n;
 

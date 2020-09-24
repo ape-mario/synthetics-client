@@ -2,6 +2,7 @@
 
   import { onMount } from 'svelte';
   import { user, minified_user } from '../stores/user.js'
+  import { chainId } from '../stores/network.js'
   import { showToast } from '../stores/toasts.js'
 
   /*
@@ -48,6 +49,7 @@
     ethereum.on('chainChanged', handleChainChanged);
 
     function handleChainChanged(_chainId) {
+      chainId.set(_chainId);
       // We recommend reloading the page, unless you must do otherwise
       // console.log('_chainId', _chainId);
       // if (_chainId != '0x1') {

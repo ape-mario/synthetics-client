@@ -1,10 +1,11 @@
 import { readable, writable, derived, get } from 'svelte/store'
-import { user } from './user.js'
-import { transactions, recentEvents } from './transactions.js'
-import { UNIT } from '../lib/constants.js'
-import getMaxAmount from '../lib/eth/getMaxAmount.js'
-import getProductBalance from '../lib/eth/getProductBalance.js'
-import getProductAddress from '../lib/eth/getProductAddress.js'
+import { user } from './user'
+import { chainId } from './network'
+import { transactions, recentEvents } from './transactions'
+import { UNIT } from '../lib/constants'
+import getMaxAmount from '../lib/eth/getMaxAmount'
+import getProductBalance from '../lib/eth/getProductBalance'
+import getProductAddress from '../lib/eth/getProductAddress'
 
 export const products = writable([]);
 export const lastFetched = writable(0);
@@ -19,16 +20,16 @@ selectedProduct.setPersist = (obj) => {
 
 export const selectedSide = writable('buy');
 
-export const selectedProductMaxAmount = derived([selectedProduct], async ([$selectedProduct], set) => {
-	if (!window.ethereum) return;
+export const selectedProductMaxAmount = derived([chainId, selectedProduct], async ([$chainId, $selectedProduct], set) => {
+	if (!window.ethereum || !ethereum.chainId) return;
 	if (!$selectedProduct) return;
 
 	const maxAmount = getMaxAmount($selectedProduct);
 	set(maxAmount);
 });
 
-export const selectedProductBalance = derived([selectedProduct, user, transactions, recentEvents], async ([$selectedProduct, $user, $transactions, $recentEvents], set) => {
-	if (!window.ethereum) return;
+export const selectedProductBalance = derived([chainId, selectedProduct, user, transactions, recentEvents], async ([$chainId, $selectedProduct, $user, $transactions, $recentEvents], set) => {
+	if (!window.ethereum || !ethereum.chainId) return;
 	if (!$selectedProduct) return;
 	if (!$user) return;
 
@@ -36,8 +37,8 @@ export const selectedProductBalance = derived([selectedProduct, user, transactio
 	set(balance);
 });
 
-export const selectedProductAddress = derived([selectedProduct], async ([$selectedProduct], set) => {
-	if (!window.ethereum) return;
+export const selectedProductAddress = derived([chainId, selectedProduct], async ([$chainId, $selectedProduct], set) => {
+	if (!window.ethereum || !ethereum.chainId) return;
 	if (!$selectedProduct) return;
 
 	const address = await getProductAddress($selectedProduct);

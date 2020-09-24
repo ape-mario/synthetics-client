@@ -1,7 +1,7 @@
 import { readable, writable, get, derived } from 'svelte/store'
-import getSymbol from '../lib/eth/getSymbol.js'
-import getDecimals from '../lib/eth/getDecimals.js'
-import { DEFAULT_DECIMALS } from '../lib/constants.js'
+import getSymbol from '../lib/eth/getSymbol'
+import getDecimals from '../lib/eth/getDecimals'
+import { DEFAULT_DECIMALS } from '../lib/constants'
 
 export const lastFetched = writable(0);
 
