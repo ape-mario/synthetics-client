@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 
 	import Header from '../components/Header.svelte'
-	import Nav from '../components/Nav.svelte'
 	import Account from '../components/Account.svelte'
 	import NewOrder from '../components/NewOrder.svelte'
 	import Transactions from '../components/Transactions.svelte'
@@ -43,7 +42,6 @@
 	<!-- {#if $user} -->
 		<div class='body-container'>
 			<ModalContainer/>
-			<Nav/>
 			<NewOrder/>
 			<Account/>
 			<Transactions/>
