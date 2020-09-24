@@ -16,5 +16,8 @@ export default function getBalance(params) {
 			to: address,
 			data: encodeMethodSignature(KECCAK_BALANCE) + encodeAddress(get(user))
 		}, "latest"]
-	}).then(BigInt);
+	}).then((balance) => {
+		if (balance == '0x') return 0n;
+		return BigInt(balance);
+	});
 }

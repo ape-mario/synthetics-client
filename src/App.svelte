@@ -33,6 +33,7 @@
 	});
 
 	// Set up the router to start and actively watch for changes
+	router.base('/#');
 	router.start();
 
 	// more on routing with page.js, including authentication https://jackwhiting.co.uk/posts/setting-up-routing-in-svelte-with-pagejs/#
