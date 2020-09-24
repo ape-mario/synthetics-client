@@ -17,5 +17,8 @@ export default function getProductBalance(params) {
 			to: contract('CAP_ASSETS'),
 			data: encodeMethodSignature(KECCAK_BALANCE) + encodeBytes32(product) + encodeAddress(get(user))
 		}, "latest"]
-	}).then(BigInt)
+	}).then((balance) => {
+		if (balance == '0x') return 0n;
+		return BigInt(balance);
+	});
 }
