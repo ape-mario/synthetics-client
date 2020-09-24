@@ -108,11 +108,6 @@
       showToast('Please install Metamask to use Cap.');
       return;
     };
-    const beta_code = localStorage.getItem('beta-code');
-    if (!beta_code) {
-      showToast('Please enter your beta invite code before connecting your wallet.');
-      return;
-    }
     ethereum
       .request({ method: 'eth_requestAccounts' })
       .then(handleAccountsChanged)

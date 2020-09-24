@@ -23,7 +23,9 @@ export default function getMaxAmount(params) {
 		const maxAmount = decodeUint(result, 2);
 
 		// cache
-		max_amount_cache[product] = maxAmount;
-		return maxAmount;
+		if (maxAmount != null) {
+			max_amount_cache[product] = maxAmount;
+		}
+		return maxAmount || 0n;
 	});
 }
