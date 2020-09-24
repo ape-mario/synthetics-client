@@ -4,11 +4,19 @@ import { chainId } from './network'
 import { transactions, recentEvents } from './transactions'
 import { UNIT } from '../lib/constants'
 import getMaxAmount from '../lib/eth/getMaxAmount'
+import getProducts from '../lib/eth/getProducts'
 import getProductBalance from '../lib/eth/getProductBalance'
 import getProductAddress from '../lib/eth/getProductAddress'
 
-export const products = writable([]);
-export const lastFetched = writable(0);
+export const products = derived([chainId], async ([$chainId], set) => {
+	if (!$chainId) return;
+
+	getProducts().then((_products) => {
+		set(_products.map(product => ({ product })));
+	}).catch((error) => {
+		console.error('Ethereum Provider error', error);
+	});
+});
 
 let defaultAccount = JSON.parse(localStorage.getItem('selected-product') || null) || {product: 'AAPL'};
 export const selectedProduct = writable(defaultAccount);
@@ -21,7 +29,7 @@ selectedProduct.setPersist = (obj) => {
 export const selectedSide = writable('buy');
 
 export const selectedProductMaxAmount = derived([chainId, selectedProduct], async ([$chainId, $selectedProduct], set) => {
-	if (!window.ethereum || !ethereum.chainId) return;
+	if (!$chainId) return;
 	if (!$selectedProduct) return;
 
 	const maxAmount = getMaxAmount($selectedProduct);
@@ -29,7 +37,7 @@ export const selectedProductMaxAmount = derived([chainId, selectedProduct], asyn
 });
 
 export const selectedProductBalance = derived([chainId, selectedProduct, user, transactions, recentEvents], async ([$chainId, $selectedProduct, $user, $transactions, $recentEvents], set) => {
-	if (!window.ethereum || !ethereum.chainId) return;
+	if (!$chainId) return;
 	if (!$selectedProduct) return;
 	if (!$user) return;
 
@@ -38,7 +46,7 @@ export const selectedProductBalance = derived([chainId, selectedProduct, user, t
 });
 
 export const selectedProductAddress = derived([chainId, selectedProduct], async ([$chainId, $selectedProduct], set) => {
-	if (!window.ethereum || !ethereum.chainId) return;
+	if (!$chainId) return;
 	if (!$selectedProduct) return;
 
 	const address = await getProductAddress($selectedProduct);

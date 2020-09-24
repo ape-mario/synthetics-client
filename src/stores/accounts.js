@@ -14,7 +14,7 @@ selectedAccount.setPersist = (obj) => {
 }
 
 export const balances = derived([chainId, user, currencies, transactions, recentEvents], async ([$chainId, $user, $currencies, $transactions, $recentEvents], set) => {
-	if (!window.ethereum || !ethereum.chainId) return;
+	if (!$chainId) return;
 	if (!$user) return;
 	if (!$currencies) return;
 
@@ -31,6 +31,8 @@ export const selectedAccountBalance = derived([selectedAccount, balances, addres
 })
 
 export const accounts = derived([currencies, balances, symbols, decimals], ([$currencies, $balances, $symbols, $decimals], set) => {
+	if (!$currencies) return;
+
 	// console.log('$currencies:', $currencies);
 	// console.log('$balances:', $balances);
 	// console.log('$symbols:', $symbols);

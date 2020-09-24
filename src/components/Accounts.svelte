@@ -1,17 +1,11 @@
 <script>
 
-	import { onMount } from 'svelte';
 	// Accounts list (shown in modal)
 	import DataTable from './DataTable.svelte'
 	import { hideModal } from '../stores/modals.js'
 	import { selectedAccount, accounts } from '../stores/accounts.js'
-	import updateCurrencies from '../lib/updates/updateCurrencies.js'
 	import { formatBigInt } from '../lib/decimals.js'
 	import { DEFAULT_PRECISION } from '../lib/constants.js'
-
-	onMount(() => {
-		window.ethereum && updateCurrencies(0, 0);
-	});
 
 	function selectAccount(account) {
 		selectedAccount.setPersist({currency: account.currency});
@@ -29,7 +23,7 @@
 	}
 </style>
 
-{#each $accounts as account}
+{#each ($accounts || []) as account}
 <DataTable>
 	<div class='header' class:active={account.currency == $selectedAccount.currency} on:click={() => {selectAccount(account)}}>
 		<span><strong>{account.currency}</strong></span>
