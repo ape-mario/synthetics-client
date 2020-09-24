@@ -10,12 +10,10 @@
 	import Toast from '../components/Toast.svelte'
 	import Footer from '../components/Footer.svelte'
 	import ModalContainer from '../components/ModalContainer.svelte'
-	import updateCurrencies from '../lib/updates/updateCurrencies.js'
 	import monitorEvents from '../lib/monitor/monitorEvents.js'
 
 	// updates the list of currencies
 	if (window.ethereum) {
-		$: updateCurrencies();
 		$: monitorEvents();
 	}
 

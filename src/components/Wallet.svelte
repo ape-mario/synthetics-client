@@ -45,20 +45,11 @@
     // Normally, we would recommend the 'eth_chainId' RPC method, but it currently
     // returns incorrectly formatted chain ID values.
     let currentChainId = ethereum.chainId;
+    chainId.set(currentChainId);
 
-    ethereum.on('chainChanged', handleChainChanged);
-
-    function handleChainChanged(_chainId) {
+    ethereum.on('chainChanged', (_chainId) => {
       chainId.set(_chainId);
-      // We recommend reloading the page, unless you must do otherwise
-      // console.log('_chainId', _chainId);
-      // if (_chainId != '0x1') {
-      //   showToast('Cap only works on Ethereum mainnet. Please switch back to the Main Ethereum Network.');
-      // }
-
-      //window.location.reload();
-      // TODO: this seems to be causing infinite reload loops, maybe from the live reload
-    }
+    });
 
     /***********************************************************/
     /* Handle user accounts and accountsChanged (per EIP-1193) */

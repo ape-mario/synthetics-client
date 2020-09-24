@@ -1,15 +1,8 @@
 <script>
 
 	import DataTable from './DataTable.svelte'
-
-	import { onMount } from 'svelte';
 	import { selectedProduct, products } from '../stores/products.js'
 	import { hideModal } from '../stores/modals.js'
-	import updateProducts from '../lib/updates/updateProducts.js'
-
-	onMount(() => {
-		window.ethereum && updateProducts();
-	});
 
 	function selectProduct(p) {
 		selectedProduct.setPersist(p); 
@@ -30,7 +23,7 @@
 </style>
 
 <DataTable>
-{#each $products as p}
+{#each ($products || []) as p}
 <div on:click={() => {selectProduct(p)}} class:active={$selectedProduct.product == p.product}>
 	<span>{p.product}</span>
 	{#if $selectedProduct.product == p.product}<span>✔</span>{/if}

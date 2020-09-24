@@ -1,11 +1,19 @@
 import { readable, writable, get, derived } from 'svelte/store'
+import { chainId } from './network'
 import getSymbol from '../lib/eth/getSymbol'
 import getDecimals from '../lib/eth/getDecimals'
+import getCurrencies from '../lib/eth/getCurrencies'
 import { DEFAULT_DECIMALS } from '../lib/constants'
 
-export const lastFetched = writable(0);
+export const currencies = derived([chainId], async ([$chainId], set) => {
+	if (!$chainId) return;
 
-export const currencies = writable([]);
+	getCurrencies().then((_currencies) => {
+		set(_currencies.map(address => ({ address })));
+	}).catch((error) => {
+		console.error('Ethereum Provider error', error);
+	});
+});
 
 export const decimals = derived([currencies], async ([$currencies], set) => {
 	if (!$currencies) return;
