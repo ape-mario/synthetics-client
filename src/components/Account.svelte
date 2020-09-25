@@ -2,12 +2,14 @@
 
 	import DataTable from './DataTable.svelte'
 
+	import { chainId } from '../stores/network.js'
 	import { selectedAccount, balances } from '../stores/accounts.js'
 	import { addresses, decimals } from '../stores/currencies.js'
 	import { selectedProduct, selectedProductBalance, selectedProductAddress } from '../stores/products.js'
 	import { formatBigInt } from '../lib/decimals.js'
 	import { DEFAULT_PRECISION, DEFAULT_DECIMALS, SYNTHS_DECIMALS, SYNTHS_PRECISION, BIGINT_ZERO } from '../lib/constants.js'
 	import watchAsset from '../lib/eth/watchAsset.js'
+	import faucetRequest from '../lib/eth/faucetRequest.js'
 
 	function getFormattedBalance(selectedAccount, balances, decimals, addresses) {
 		const address = addresses[selectedAccount.currency];
@@ -29,7 +31,7 @@
 	
 </style>
 
-<DataTable title={'Account (' + $selectedAccount.currency + ')'} separator={true}>
+<DataTable title={'Account (' + $selectedAccount.currency + ')'} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { faucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
 	<div>
 		<span class='has-tooltip' data-tooltip='Current wallet balance.' tabindex='0'>Balance</span>
 		<span>{getFormattedBalance($selectedAccount, $balances, $decimals, $addresses)}</span>
