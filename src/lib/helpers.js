@@ -12,3 +12,9 @@ export function getCurrencyDecimals(params) {
 	const address = getCurrencyAddress(params);
 	return (get(decimals) || {})[address] || DEFAULT_DECIMALS;
 }
+
+export function async_timeout(duration) {
+	return new Promise((resolve) => {
+		setTimeout(() => { resolve() }, duration);
+	})
+}

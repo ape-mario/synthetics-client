@@ -2,14 +2,17 @@
 
 	import DataTable from './DataTable.svelte'
 
-	import { chainId } from '../stores/network.js'
-	import { selectedAccount, balances } from '../stores/accounts.js'
-	import { addresses, decimals } from '../stores/currencies.js'
-	import { selectedProduct, selectedProductBalance, selectedProductAddress } from '../stores/products.js'
-	import { formatBigInt } from '../lib/decimals.js'
-	import { DEFAULT_PRECISION, DEFAULT_DECIMALS, SYNTHS_DECIMALS, SYNTHS_PRECISION, BIGINT_ZERO } from '../lib/constants.js'
-	import watchAsset from '../lib/eth/watchAsset.js'
-	import faucetRequest from '../lib/eth/faucetRequest.js'
+	import { showToast } from '../stores/toasts'
+	import { chainId } from '../stores/network'
+	import { selectedAccount, balances, faucetUpdate } from '../stores/accounts'
+	import { addresses, decimals } from '../stores/currencies'
+	import { selectedProduct, selectedProductBalance, selectedProductAddress } from '../stores/products'
+	import { formatBigInt } from '../lib/decimals'
+	import { DEFAULT_PRECISION, DEFAULT_DECIMALS, SYNTHS_DECIMALS, SYNTHS_PRECISION, BIGINT_ZERO } from '../lib/constants'
+	import watchAsset from '../lib/eth/watchAsset'
+	import faucetRequest from '../lib/eth/faucetRequest'
+	import getTransactionReceipt from '../lib/eth/getTransactionReceipt'
+	import { async_timeout } from '../lib/helpers'
 
 	function getFormattedBalance(selectedAccount, balances, decimals, addresses) {
 		const address = addresses[selectedAccount.currency];
@@ -25,13 +28,40 @@
 		});
 	}
 
+	async function sendFaucetRequest(params) {
+		try {
+			const txhash = await faucetRequest(params);
+			showToast('Requested tokens from faucet.', 'success');
+
+			let isPending = true;
+
+			while(isPending) {
+				const response = await getTransactionReceipt({ txhash });
+				if (response) {
+					if (parseInt(response.status)) {
+						// successful => refresh balance
+						faucetUpdate.set(txhash);
+						break;
+					} else {
+						// failed => show toast
+						throw new Error('Faucet request failed.');
+					}
+				}
+				await async_timeout(1000);
+			}
+		} catch (e) {
+			console.error(e);
+			showToast(e && e.message);
+		}
+	}
+
 </script>
 
 <style>
 	
 </style>
 
-<DataTable title={'Account (' + $selectedAccount.currency + ')'} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { faucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
+<DataTable title={'Account (' + $selectedAccount.currency + ')'} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { sendFaucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
 	<div>
 		<span class='has-tooltip' data-tooltip='Current wallet balance.' tabindex='0'>Balance</span>
 		<span>{getFormattedBalance($selectedAccount, $balances, $decimals, $addresses)}</span>
