@@ -3,7 +3,6 @@
 	import DataTable from './DataTable.svelte'
 	import Button from './Button.svelte'
 
-	import { onMount } from 'svelte'
 	import { hideModal } from '../stores/modals.js'
 	import { showToast } from '../stores/toasts.js'
 	import { pendingTransactions, recentTransactions } from '../stores/transactions.js'
@@ -14,8 +13,6 @@
 
 	// from modal
 	export let data;
-
-	// console.log('modal data', data);
 
 	let price = '...', rate;
 

@@ -14,7 +14,6 @@
 	// Set up the pages to watch for
 	router('/', (ctx, next) => {
 		params = {};
-		// hideModal();
 		next();
 	});
 	router('/:product', (ctx, next) => {
@@ -82,7 +81,6 @@
 	}
 
 	/* tooltip */
-
 	:global(.has-tooltip) {
 		cursor: help;
 		position: relative;

@@ -60,8 +60,6 @@ export default function sign(params) {
       message: Object.assign({}, ...data.map(i => ({[i.name]: i.value})))
     })
 
-    // console.log('signing:', [owner, typedData]);
-
     return ethereum.request({
 		method: 'eth_signTypedData_v4',
 		from: owner,

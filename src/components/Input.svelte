@@ -3,9 +3,8 @@
 	export let _type = 'number';
 	export let value;
 	export let placeholder;
-	export let max = 100000000000000;
-	export let min = 1;
 	export let disabled = false;
+	export let element;
 
 </script>
 
@@ -26,7 +25,7 @@
 </style>
 
 {#if _type == 'number'}
-<input type='text' inputmode='numeric' pattern='\d+(?:\.\d*)?' step='0.01' {disabled} min={min} max={max} required autofocus placeholder={placeholder || ''} bind:value={value}>
+<input bind:this={element} type='text' inputmode='numeric' pattern='\d+(?:\.\d*)?' {disabled} required autofocus placeholder={placeholder || ''} bind:value={value}>
 {:else}
-<input type='text' {disabled} required autofocus placeholder={placeholder || ''} bind:value={value}>
+<input bind:this={element} type='text' {disabled} required autofocus placeholder={placeholder || ''} bind:value={value}>
 {/if}

@@ -31,6 +31,7 @@ export default async function submitSellOrder(params) {
 	const deadline = Math.ceil(Date.now() / 1000) + 60 * 5;
 
 	let signature = { v: BIGINT_ZERO, r: EMPTY_BYTES32, s: EMPTY_BYTES32 };
+
 	// sign only if not enough allowance margin
 	let permit = false;
 	if (allowance < 100n * amount) {

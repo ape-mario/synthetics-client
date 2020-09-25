@@ -1,6 +1,7 @@
 <script>
 
 	import DataTable from './DataTable.svelte'
+
 	import { selectedProduct, products } from '../stores/products.js'
 	import { hideModal } from '../stores/modals.js'
 

@@ -9,7 +9,7 @@ export default async function watchAsset(params) {
 	} = params;
 
 	try {
-		const response = await ethereum.request({
+		await ethereum.request({
 			method: 'wallet_watchAsset',
 			params: {
 				type: 'ERC20',
@@ -21,7 +21,6 @@ export default async function watchAsset(params) {
 				}
 			}
 		});
-		// console.log('asset registered');
 	} catch (e) {
 		console.error(e);
 	}	

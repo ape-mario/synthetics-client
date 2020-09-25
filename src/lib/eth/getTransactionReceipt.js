@@ -1,4 +1,3 @@
-
 const cache = {}
 
 export default function getTransactionReceipt(params) {

@@ -1,5 +1,4 @@
 export function formatBigInt(value, decimals, precision) {
-	// console.log('formatBigInt:', {value, decimals, precision});
 	const unit = 10n ** decimals;
 	const integer = value / unit;
 	const fractional = (value % unit);

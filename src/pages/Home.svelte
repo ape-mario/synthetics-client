@@ -10,11 +10,10 @@
 	import Footer from '../components/Footer.svelte'
 	import ModalContainer from '../components/ModalContainer.svelte'
 	import monitorEvents from '../lib/monitor/monitorEvents.js'
+	import { selectedProduct } from '../stores/products.js'
+	import { selectedAccount } from '../stores/accounts.js'
 
-	// updates the list of currencies
-	if (window.ethereum) {
-		$: monitorEvents();
-	}
+	$: monitorEvents();
 
 </script>
 
@@ -39,16 +38,12 @@
 <div class='container'>
 	<Toast/>
 	<Header/>
-	<!-- {#if $user} -->
 		<div class='body-container'>
 			<ModalContainer/>
-			<NewOrder/>
+			<NewOrder selectedProduct={$selectedProduct} selectedAccount={$selectedAccount} />
 			<Account/>
 			<Transactions/>
 		</div>
-	<!-- {:else}
-		// TODO add page for when metamask is not installed
-	{/if} -->
 	<Footer/>
 </div>
 

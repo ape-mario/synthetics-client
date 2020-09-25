@@ -27,9 +27,6 @@ export default async function submitBuyOrder(params) {
 
 	const currencyAddress = get(addresses)[currency];
 
-	// TODO remove later
-	// await approveAmount({address: currencyAddress, amount: '0'});
-
 	const _user = get(user);
 
 	const [name, nonce, allowance] = await Promise.all([
