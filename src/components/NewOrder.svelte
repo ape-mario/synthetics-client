@@ -2,25 +2,33 @@
 
 	import Button from './Button.svelte'
 	import Input from './Input.svelte'
-	import { selectedProduct, selectedSide, selectedProductMaxAmount, selectedProductAddress, selectedProductBalance } from '../stores/products.js'
-	import { selectedAccount, selectedAccountBalance } from '../stores/accounts.js'
-	import { SYNTHS_DECIMALS } from '../lib/constants.js'
-	import { getCurrencyDecimals } from '../lib/helpers.js'
-	import { formatBigInt } from '../lib/decimals.js'
-	
+
+	import { selectedSide, selectedProductMaxAmount, selectedProductAddress, selectedProductBalance } from '../stores/products.js'
+	import { selectedAccountBalance } from '../stores/accounts.js'
 	import { showModal } from '../stores/modals.js'
+	import { SYNTHS_DECIMALS, BIGINT_ZERO } from '../lib/constants.js'
+	import { getCurrencyDecimals } from '../lib/helpers.js'
+	import { formatBigInt, parseDecimal } from '../lib/decimals.js'
+
+	export let selectedProduct;
+	export let selectedAccount;
 
 	let amount;
+	let input;
+
+	function getDecimals() {
+		return $selectedSide == 'buy' ? getCurrencyDecimals(selectedAccount) : SYNTHS_DECIMALS;
+	}
 
 	function submitOrder() {
-		const { product } = $selectedProduct;
-		const { currency } = $selectedAccount;
+		const { product } = selectedProduct;
+		const { currency } = selectedAccount;
 
 		showModal('review-order', {
 			product: product,
 			address: $selectedProductAddress,
 			amount,
-			decimals: $selectedSide == 'buy' ? getCurrencyDecimals($selectedAccount) : SYNTHS_DECIMALS,
+			decimals: getDecimals(),
 			side: $selectedSide,
 			currency
 		});
@@ -28,16 +36,52 @@
 		amount = undefined;
 	}
 
-	async function setMax() {
-		const { currency } = $selectedAccount;
+	async function validateInput() {
+		if (input) {
+			if (input.validity.patternMismatch || input.validity.valueMissing) return true;
 
+			const bigIntAmount = parseDecimal(amount, getDecimals());
+			const maxBigIntAmount = $selectedSide == 'buy' ? $selectedAccountBalance : await $selectedProductBalance;
+
+			if (bigIntAmount == BIGINT_ZERO) {
+				input.setCustomValidity('Amount below minimum.');
+			} else if (bigIntAmount > maxBigIntAmount) {
+				input.setCustomValidity('Insufficient funds.');
+			} else if ($selectedSide == 'buy' && bigIntAmount > $selectedProductMaxAmount) {
+				input.setCustomValidity('Amount above maximum allowed for this product.');
+			} else {
+				input.setCustomValidity('');
+			}
+			return true;
+		}
+	}
+
+	async function setMax() {
+		const { currency } = selectedAccount;
 		if ($selectedSide == 'buy') {
-			const decimals = getCurrencyDecimals($selectedAccount);
+			const decimals = getCurrencyDecimals(selectedAccount);
 			amount = formatBigInt($selectedAccountBalance, decimals, decimals);
 		} else {
-			const balance = await $selectedProductBalance;
-			amount = formatBigInt(balance, SYNTHS_DECIMALS, SYNTHS_DECIMALS);
+			amount = formatBigInt(await $selectedProductBalance, SYNTHS_DECIMALS, SYNTHS_DECIMALS);
 		}
+	}
+
+	function toggleSide() {
+		selectedSide.set($selectedSide == 'buy' ? 'sell' : 'buy');
+		validateInput();
+	}
+
+	function showProducts() {
+		showModal('products', {});
+	}
+
+	function showAccounts() {
+		showModal('accounts', {});
+	}
+
+	$: {
+		// validate input on every selectedProduct or selectedAccount change
+		validateInput();
 	}
 
 </script>
@@ -61,11 +105,11 @@
 </style>
 
 <div>
-	<a on:click={() => {selectedSide.set($selectedSide == 'buy' ? 'sell' : 'buy')}}>{$selectedSide == 'buy' ? 'Buy' : 'Sell'}</a> › <a on:click={() => {showModal('products', {})}}>{$selectedProduct.product}</a> with <a on:click={() => {showModal('accounts', {})}}>{$selectedAccount.currency}</a>
+	<a on:click={toggleSide}>{$selectedSide == 'buy' ? 'Buy' : 'Sell'}</a> › <a on:click={showProducts}>{selectedProduct.product}</a> with <a on:click={showAccounts}>{selectedAccount.currency}</a>
 </div>
-<form on:submit|preventDefault={submitOrder}>
+<form on:submit|preventDefault={submitOrder} on:invalid={validateInput} on:changed={validateInput} on:input={validateInput}>
 <div class='input-container'>
-	<Input placeholder={'0.0 ' + ($selectedSide == 'buy' ? $selectedAccount.currency : $selectedProduct.product)} bind:value={amount} min={1} max={$selectedProductMaxAmount} /><a on:click={setMax}><span class='input-label'>max</span></a>
+	<Input bind:element={input} placeholder={'0.0 ' + ($selectedSide == 'buy' ? selectedAccount.currency : selectedProduct.product)} bind:value={amount} /><a on:click={setMax}><span class='input-label'>max</span></a>
 </div>
-<div><Button text={($selectedSide == 'buy' ? 'Buy' : 'Sell') + " " + $selectedProduct.product} /></div>
+<div><Button text={($selectedSide == 'buy' ? 'Buy' : 'Sell') + " " + selectedProduct.product} /></div>
 </form>

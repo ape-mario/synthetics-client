@@ -4,8 +4,6 @@ import { encodeMethodSignature, decodeString } from '../abi.js'
 
 const KECCAK_NAME = keccak256('name()');
 
-// TODO add local cache also
-
 const names_cache = {}
 
 export default function getName(params) {

@@ -1,7 +1,7 @@
 <script>
 
-	// Accounts list (shown in modal)
 	import DataTable from './DataTable.svelte'
+
 	import { hideModal } from '../stores/modals.js'
 	import { selectedAccount, accounts } from '../stores/accounts.js'
 	import { formatBigInt } from '../lib/decimals.js'

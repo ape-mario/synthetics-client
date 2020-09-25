@@ -4,8 +4,6 @@ import { encodeMethodSignature, decodeString } from '../abi.js'
 
 const KECCAK_SYMBOL = keccak256('symbol()');
 
-// TODO add local cache also
-
 const symbols_cache = {}
 
 export default function getSymbol(params) {

@@ -4,8 +4,6 @@ import { encodeMethodSignature } from '../abi.js'
 
 const KECCAK_DECIMALS = keccak256('decimals()');
 
-// TODO add local cache also
-
 const decimals_cache = {}
 
 export default function getDecimals(params) {

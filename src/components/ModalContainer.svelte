@@ -2,9 +2,9 @@
 
 	import { modalActive, hideModal } from '../stores/modals.js'
 
-	import Products from '../components/Products.svelte'
-	import Accounts from '../components/Accounts.svelte'
-	import ReviewOrder from '../components/ReviewOrder.svelte'
+	import Products from './Products.svelte'
+	import Accounts from './Accounts.svelte'
+	import ReviewOrder from './ReviewOrder.svelte'
 
 </script>
 

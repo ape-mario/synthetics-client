@@ -12,8 +12,6 @@ export function encodeAddress(address) {
 
 export function encodeBytes32(value) {
 	const encoded = new TextEncoder().encode(value);
-	// TODO review if we need a null terminator
-	// https://github.com/ethers-io/ethers.js/blob/d817416bae2fbc7adb8391fd038613241b7ab8ba/packages/strings/src.ts/bytes32.ts#L15
 	if (encoded.length > 31) throw Error('bytes32 string must be less than 32 bytes');
 	return encoded.reduce(((acc, num) => acc + num.toString(16)), '').padEnd(64, 0);
 }
