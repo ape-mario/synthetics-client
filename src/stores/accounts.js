@@ -13,7 +13,9 @@ selectedAccount.setPersist = (obj) => {
 	selectedAccount.set(obj);
 }
 
-export const balances = derived([chainId, user, currencies, transactions, recentEvents], async ([$chainId, $user, $currencies, $transactions, $recentEvents], set) => {
+export const faucetUpdate = writable('');
+
+export const balances = derived([chainId, user, currencies, transactions, recentEvents, faucetUpdate], async ([$chainId, $user, $currencies, $transactions, $recentEvents, $faucetUpdate], set) => {
 	if (!$chainId) return;
 	if (!$user) return;
 	if (!$currencies) return;
