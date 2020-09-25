@@ -124,12 +124,6 @@
 	    transition: all 0.1s ease;
 	    outline: none;
 	}
-	/* transition end */
-	:global(.has-tooltip.hover-tooltip:hover::before, .has-tooltip.hover-tooltip:hover::after) {
-	    opacity: 1;
-	    transition: all 0.1s ease;
-	    outline: none;
-	}
 </style>
 
 <main>

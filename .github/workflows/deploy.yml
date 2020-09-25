@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - master
+  pull_request:
 
 jobs:
   package:
@@ -35,4 +36,5 @@ jobs:
         run: npm run build
 
       - name: publish to IPFS
+        if: github.event_name == 'push'
         run: npx ipfs-deploy build
