@@ -31,7 +31,7 @@ export const selectedProductMaxAmount = derived([chainId, selectedProduct], asyn
 	if (!$chainId) return;
 	if (!$selectedProduct) return;
 
-	const maxAmount = getMaxAmount($selectedProduct);
+	const maxAmount = await getMaxAmount($selectedProduct);
 	set(maxAmount);
 });
 

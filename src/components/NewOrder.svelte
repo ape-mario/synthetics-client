@@ -41,7 +41,7 @@
 			if (input.validity.patternMismatch || input.validity.valueMissing) return true;
 
 			const bigIntAmount = parseDecimal(amount, getDecimals());
-			const maxBigIntAmount = $selectedSide == 'buy' ? $selectedAccountBalance : await $selectedProductBalance;
+			const maxBigIntAmount = $selectedSide == 'buy' ? $selectedAccountBalance : $selectedProductBalance;
 
 			if (bigIntAmount == BIGINT_ZERO) {
 				input.setCustomValidity('Amount below minimum.');
@@ -62,7 +62,7 @@
 			const decimals = getCurrencyDecimals(selectedAccount);
 			amount = formatBigInt($selectedAccountBalance, decimals, decimals);
 		} else {
-			amount = formatBigInt(await $selectedProductBalance, SYNTHS_DECIMALS, SYNTHS_DECIMALS);
+			amount = formatBigInt($selectedProductBalance, SYNTHS_DECIMALS, SYNTHS_DECIMALS);
 		}
 	}
 
