@@ -1,7 +1,7 @@
 {
   "name": "synthetics-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "Cap Synthetics client",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
