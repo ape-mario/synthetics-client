@@ -105,7 +105,7 @@
 </style>
 
 <div>
-	<a on:click={toggleSide}>{$selectedSide == 'buy' ? 'Buy' : 'Sell'}</a> › <a on:click={showProducts}>{selectedProduct.product}</a> with <a on:click={showAccounts}>{selectedAccount.currency}</a>
+	<a on:click={toggleSide}>{$selectedSide == 'buy' ? 'Buy' : 'Sell'}</a> › <a on:click={showProducts}>{selectedProduct.product}</a> {$selectedSide == 'buy' ? 'with' : 'for'} <a on:click={showAccounts}>{selectedAccount.currency}</a>
 </div>
 <form on:submit|preventDefault={submitOrder} on:invalid={validateInput} on:changed={validateInput} on:input={validateInput}>
 <div class='input-container'>
