@@ -17,7 +17,7 @@
 </style>
 
 <footer>
-	<span>Cap (Beta)</span>
+	<span>Cap (Ropsten testnet)</span>
 	<span>
 		<a href='https://t.me/capfin' target='_blank'>Telegram</a>, <a href='https://blog.cap.finance' target='_blank'>Blog</a>, <a href='https://twitter.com/CapDotFinance' target='_blank'>Twitter</a>
 	</span>
