@@ -3,6 +3,7 @@ const filter_cache = {}
 export default function newFilter(params) {
 
 	const {
+		fromBlock,
 		addresses
 	} = params;
 
@@ -13,6 +14,7 @@ export default function newFilter(params) {
 	return ethereum.request({
 		method: 'eth_newFilter',
 		params: [{
+			fromBlock,
 			address: addresses
 		}]
 	}).then((filter_id) => {

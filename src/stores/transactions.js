@@ -1,7 +1,7 @@
 import { writable, get, derived } from 'svelte/store'
 import { user } from './user'
 import { showToast } from './toasts'
-import { getCurrencyDecimals } from '../lib/helpers'
+import { getCurrencyDecimals, bigIntComparator } from '../lib/helpers'
 import getTransactionByHash from '../lib/eth/getTransactionByHash'
 import getTransactionReceipt from '../lib/eth/getTransactionReceipt'
 import getTxFailureReason from '../lib/eth/getTxFailureReason'
@@ -30,21 +30,30 @@ pendingTransactions.delete = function (txhash) {
 	return false;
 }
 
-export const queuedTransactions = writable([]);
-queuedTransactions.unshift = function (txhash) {
+export const queuedTransactions = writable({});
+queuedTransactions.add = function (txhash, blockNumber) {
 	const _queuedTransactions = get(queuedTransactions);
-	_queuedTransactions.unshift(txhash);
-	queuedTransactions.set(_queuedTransactions);
+	if (!_queuedTransactions[txhash]) {
+		_queuedTransactions[txhash] = blockNumber;
+		queuedTransactions.set(_queuedTransactions);
+	}
 }
 queuedTransactions.delete = function (txhash) {
 	const _queuedTransactions = get(queuedTransactions);
-	const _filteredTransactions = _queuedTransactions.filter(hash => hash != txhash);
-	if (_filteredTransactions.length != _queuedTransactions.length) {
-		queuedTransactions.set(_filteredTransactions);
+	if (delete _queuedTransactions[txhash]) {
+		queuedTransactions.set(_queuedTransactions);
 		return true;
 	}
 	return false;
 }
+
+export const queuedFirstBlockNumber = derived(queuedTransactions, ($queuedTransactions) => {
+	const blockNumbers = Object.values($queuedTransactions);
+	if (blockNumbers.length > 0) {
+		return blockNumbers.sort(bigIntComparator)[0];
+	}
+	return null;
+});
 
 export const recentEvents = writable(JSON.parse(localStorage.getItem('recent-events') || null) || {});
 
@@ -125,9 +134,11 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 									getTxFailureReason(tx_info).then(reason => reason && showToast(reason));
 								}
 							});
-						} else {
-							queuedTransactions.unshift(txhash);
 						}
+					}
+
+					if (status == 'queued') {
+						queuedTransactions.add(txhash, blockNumber);
 					}
 
 				} else {
