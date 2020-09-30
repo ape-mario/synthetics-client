@@ -1,6 +1,6 @@
 import newFilter from './newFilter.js'
 
-export default async function getFilterChanges(params) {
+export default async function getFilterLogs(params) {
 
 	const {
 		addresses,
@@ -11,7 +11,7 @@ export default async function getFilterChanges(params) {
 	const filter_id = await newFilter(params);
 
 	const logs = await ethereum.request({
-		method: 'eth_getFilterChanges',
+		method: 'eth_getFilterLogs',
 		params: [filter_id],
 	});
 

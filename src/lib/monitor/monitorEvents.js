@@ -2,9 +2,9 @@ import { contract } from '../constants.js'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
 import { user } from '../../stores/user.js'
-import { recentTransactions, recentEvents } from '../../stores/transactions.js'
+import { recentTransactions, recentEvents, queuedFirstBlockNumber } from '../../stores/transactions.js'
 import { decodeUint, decodeString } from '../abi.js'
-import getFilterChanges from '../eth/getFilterChanges.js'
+import getFilterLogs from '../eth/getFilterLogs.js'
 
 const types = [
 	'0x' + keccak256('BuyOrderProcessed(uint256,address,uint256,uint256)'),
@@ -48,12 +48,18 @@ function getUsers() {
 
 export default function monitorEvents() {
 
-	setInterval(async () => {
-		const logs = await getFilterChanges({ addresses: [ contract('CAP_ASSETS') ], types, users: getUsers() });
-		const events = logs.map(extractLogData);
-		if (events.length > 0) {
-			recentEvents.addPersist(events);
+	const checkEvents = async () => {
+		const fromBlock = get(queuedFirstBlockNumber);
+		if (fromBlock) {
+			const logs = await getFilterLogs({ fromBlock, addresses: [ contract('CAP_ASSETS') ], types, users: getUsers() });
+			const events = logs.map(extractLogData);
+			if (events.length > 0) {
+				recentEvents.addPersist(events);
+			}
 		}
-	}, 5000)
+	}
+
+	setInterval(checkEvents, 5000);
+	setTimeout(checkEvents, 1000);
 
 }

@@ -18,3 +18,8 @@ export function async_timeout(duration) {
 		setTimeout(() => { resolve() }, duration);
 	})
 }
+
+export function bigIntComparator(a, b) {
+	if (a == b) return 0;
+	return BigInt(a) > BigInt(b) ? 1 : -1;
+}
