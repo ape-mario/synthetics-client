@@ -1,106 +1,118 @@
 import { writable, get, derived } from 'svelte/store'
 import { user } from './user'
-import { showToast } from './toasts'
-import { getCurrencyDecimals, bigIntComparator } from '../lib/helpers'
-import getTransactionByHash from '../lib/eth/getTransactionByHash'
+import { chainId } from './network'
 import getTransactionReceipt from '../lib/eth/getTransactionReceipt'
-import getTxFailureReason from '../lib/eth/getTxFailureReason'
+import { getLatestOrders, getLatestOrderUpdates } from '../lib/eth/getLatestOrders'
 import { formatBigInt } from '../lib/decimals'
-import { keccak256 } from 'js-sha3';
 import { DEFAULT_PRECISION, SYNTHS_DECIMALS, SYNTHS_PRECISION } from '../lib/constants'
+import { ORDER_SUBMITTED_EVENT_TYPES } from '../lib/eventHelpers'
 
-const types = [
-	'0x' + keccak256('BuyOrderSubmitted(uint256,address,address,uint256,address)'),
-	'0x' + keccak256('SellOrderSubmitted(uint256,address,address,uint256,address)')
-]
+// latestEvents are polled from the blockchain at an interval
+export const latestEvents = writable({});
+latestEvents.addEvents = function (new_events) {
+	latestEvents.update((_latestEvents) => {
+		let mergedEvents = Object.assign({}, _latestEvents, new_events);
 
-export const pendingTransactions = writable([]);
-pendingTransactions.unshift = function (txhash) {
-	const _pendingTransactions = get(pendingTransactions);
-	_pendingTransactions.unshift(txhash);
-	pendingTransactions.set(_pendingTransactions);
-}
-pendingTransactions.delete = function (txhash) {
-	const _pendingTransactions = get(pendingTransactions);
-	const _filteredTransactions = _pendingTransactions.filter(hash => hash != txhash);
-	if (_filteredTransactions.length != _pendingTransactions.length) {
-		pendingTransactions.set(_filteredTransactions);
-		return true;
-	}
-	return false;
+		// cleanup oldest event
+		const idsToCleanup = Object.keys(mergedEvents).sort().slice(0, -10);
+		for (const toDelete of idsToCleanup) {
+			delete mergedEvents[toDelete];
+		}
+		return mergedEvents;
+	});
 }
 
-export const queuedTransactions = writable({});
-queuedTransactions.add = function (txhash, blockNumber) {
-	const _queuedTransactions = get(queuedTransactions);
-	if (!_queuedTransactions[txhash]) {
-		_queuedTransactions[txhash] = blockNumber;
-		queuedTransactions.set(_queuedTransactions);
+// latestOrders is updated from the blockchain when the user changes
+export const latestOrders = derived([user, chainId], ([$user, $chainId], set) => {
+	if (!$user) return;
+
+	const fetchLatestOrders = async () => {
+		const { submitted, processed } = await getLatestOrders({ user: $user });
+		set(submitted);
+		latestEvents.set(processed);
+	}
+
+	const updateLatestOrders = async () => {
+		const { processed } = await getLatestOrderUpdates({ user: $user });
+		if (Object.keys(processed).length > 0) {
+			latestEvents.addEvents(processed);
+		}
+	}
+
+	const interval = setInterval(updateLatestOrders, 5000);
+	fetchLatestOrders();
+
+	return () => {
+		if (interval) {
+			clearInterval(interval);
+		}
+	}
+})
+
+// used to append new pending transaction
+export const pendingTransaction = writable(null);
+
+// pendingTransactions is updated om user actions 
+export const pendingTransactions = writable({});
+
+const updatePendingTransactions = (params) => {
+	const {
+		$user,
+		$chainId,
+		$pendingTransaction
+	} = params
+
+	if ($user || $chainId) {
+
+		// handle user changed
+		pendingTransactions.update((_pendingTransactions) => {
+			if (_pendingTransactions.user == $user && _pendingTransactions.chainId == $chainId) return _pendingTransactions;
+
+			// user or network changed
+			return JSON.parse(localStorage.getItem(`pending-transactions-${$user}-${$chainId}`) || null) || {user: $user, chainId: $chainId}
+		})
+
+	} else if ($pendingTransaction) {
+
+		pendingTransactions.update((_pendingTransactions) => {
+			// make sure user is set before adding the new pending transaction
+			if (!_pendingTransactions.user || !_pendingTransactions.chainId || !$pendingTransaction) return _pendingTransactions;
+			const transactions = _pendingTransactions.transactions || [];
+			transactions.unshift(Object.assign({user: _pendingTransactions.user}, $pendingTransaction));
+			const updatedPendingTransactions = Object.assign({}, _pendingTransactions, { transactions: transactions.slice(0, 10) });
+			localStorage.setItem(`pending-transactions-${_pendingTransactions.user}-${_pendingTransactions.chainId}`, JSON.stringify(updatedPendingTransactions));
+			return updatedPendingTransactions;
+		})
 	}
 }
-queuedTransactions.delete = function (txhash) {
-	const _queuedTransactions = get(queuedTransactions);
-	if (delete _queuedTransactions[txhash]) {
-		queuedTransactions.set(_queuedTransactions);
-		return true;
-	}
-	return false;
-}
 
-export const queuedFirstBlockNumber = derived(queuedTransactions, ($queuedTransactions) => {
-	const blockNumbers = Object.values($queuedTransactions);
-	if (blockNumbers.length > 0) {
-		return blockNumbers.sort(bigIntComparator)[0];
-	}
-	return null;
-});
+chainId.subscribe($chainId => updatePendingTransactions({ $user: get(user), $chainId }));
+user.subscribe($user => updatePendingTransactions({ $user, $chainId: get(chainId) }));
+pendingTransaction.subscribe($pendingTransaction => updatePendingTransactions({ $pendingTransaction }));
 
-export const recentEvents = writable(JSON.parse(localStorage.getItem('recent-events') || null) || {});
-
-recentEvents.addPersist = function (new_events) {
-	const _recentEvents = get(recentEvents);
-	for (const event of new_events) {
-		Object.assign(_recentEvents, event);
-	}
-	// cleanup oldest event
-	const ids = Object.keys(_recentEvents);
-	if (ids.length > 10) {
-		let toDelete = ids.sort()[0];
-		delete _recentEvents[toDelete];
-	}
-	localStorage.setItem('recent-events', JSON.stringify(_recentEvents));
-	recentEvents.set(_recentEvents);
-}
-
-export const recentTransactions = writable(JSON.parse(localStorage.getItem('recent-transactions') || null) || []);
-
-recentTransactions.unshiftPersist = function (transaction) {
-	const _recentTransactions = get(recentTransactions);
-	if (_recentTransactions.unshift(Object.assign({user: get(user)}, transaction)) > 10) {
-		_recentTransactions.pop();
-	}
-	localStorage.setItem('recent-transactions', JSON.stringify(_recentTransactions));
-	recentTransactions.set(_recentTransactions);
-}
-
-export const transactions = derived(recentTransactions, async ($recentTransactions, set) => {
+// recentTransactions fetches missing information in pendingTransactions from the blockchain
+export const recentTransactions = derived(pendingTransactions, ($pendingTransactions, set) => {
 
 	let isPending;
 	let interval;
 
-	const updateTransactions = async () => {
-		const results = await Promise.allSettled($recentTransactions.map(getTransactionReceipt));
+	const updateRecentTransactions = async () => {
+		const { transactions } = $pendingTransactions;
+		if (!transactions) return set([]);
+
+		const results = await Promise.allSettled(transactions.map(getTransactionReceipt));
 		isPending = false;
 		const _transactions = results.map((result, index) => {
 			let status = 'N/A';
-			let orderId = null;
+			let id = null;
 			if (result.status === 'fulfilled') {
 				const tx_receipt = result.value;
 				if (tx_receipt) {
 					const {
 						user,
-						txhash
-					} = $recentTransactions[index];
+						txhash,
+						timestamp
+					} = transactions[index];
 
 					const {
 						logs,
@@ -113,32 +125,9 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 
 					// extract orderId from emitted event
 					const _user = '0x' + user.slice(2).padStart(64, 0);
-					const orderSubmittedEventLogs = logs.filter(log => types.includes(log.topics[0]) && log.topics[1] == _user);
+					const orderSubmittedEventLogs = logs.filter(log => ORDER_SUBMITTED_EVENT_TYPES.includes(log.topics[0]) && log.topics[1] == _user);
 					if (orderSubmittedEventLogs.length > 0) {
-						orderId = BigInt(orderSubmittedEventLogs[0].data.slice(0, 2 + 64));
-					}
-
-					// update pendingTransactions
-					if (pendingTransactions.delete(txhash)) {
-						if (status == 'failed') {
-							getTransactionByHash($recentTransactions[index]).then((tx) => {
-								const {
-									gas
-								} = tx;
-
-								if (BigInt(gas) * 98n < BigInt(gasUsed) * 100n) {
-									showToast('Transaction ran out of gas. Try bumping the gas limit.');
-								} else {
-									// add blockNumber to fetch the failure reason
-									const tx_info = Object.assign({blockNumber: blockNumber}, tx);
-									getTxFailureReason(tx_info).then(reason => reason && showToast(reason));
-								}
-							});
-						}
-					}
-
-					if (status == 'queued') {
-						queuedTransactions.add(txhash, blockNumber);
+						id = BigInt(orderSubmittedEventLogs[0].data.slice(0, 2 + 64)).toString();
 					}
 
 				} else {
@@ -146,7 +135,7 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 					status = 'pending';
 				}
 			}
-			return Object.assign({}, $recentTransactions[index], { status, orderId });
+			return Object.assign({}, transactions[index], { status, id });
 		});
 
 		set(_transactions);
@@ -154,8 +143,8 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 		if (!isPending && interval) clearInterval(interval);
 	}
 
-	interval = setInterval(updateTransactions, 1000);
-	updateTransactions();
+	interval = setInterval(updateRecentTransactions, 5000);
+	updateRecentTransactions();
 
 	return () => {
 		clearInterval(interval);
@@ -163,14 +152,22 @@ export const transactions = derived(recentTransactions, async ($recentTransactio
 
 });
 
-export const orders = derived([transactions, recentEvents], ([$transactions, $recentEvents]) => {
-	if (!$transactions) return [];
+// orders takes merges all the above data for the UI to consume
+export const orders = derived([latestOrders, latestEvents, recentTransactions], ([$latestOrders, $latestEvents, $recentTransactions]) => {
+	if (!$latestOrders) return [];
+	const concatenatedOrders = ($recentTransactions || []).concat($latestOrders || [])
+	const uniqConcatenatedOrders = concatenatedOrders.filter((tx, index) => concatenatedOrders.findIndex(data => data.txhash == tx.txhash) == index);
+	const allOrders = uniqConcatenatedOrders.sort((a, b) => {
+		// ids are only the same if they're null and the orders are pending
+		if (a.id == b.id) return a.timestamp > b.timestamp;
+		return BigInt(a.id || -1n) > BigInt(b.id || -1n)
+	}).slice(0, 10);
 
-	return $transactions.map(function (transaction) {
-		if (!$recentEvents || !transaction.orderId) return transaction;
+	return allOrders.map(function (order) {
+		if (!$latestEvents || !order.id) return order;
 
-		const event = $recentEvents[transaction.orderId];
-		if (!event) return transaction;
+		const event = $latestEvents[order.id];
+		if (!event) return Object.assign({}, order, {status: 'queued'});
 
 		if (event.processed) {
 			// order processed
@@ -179,18 +176,15 @@ export const orders = derived([transactions, recentEvents], ([$transactions, $re
 				price
 			} = event;
 
-			queuedTransactions.delete(transaction.txhash);
-
 			const {
 				side,
-				currency
-			} = transaction;
+				currencyDecimals
+			} = order;
 
-			const currencyDecimals = getCurrencyDecimals(transaction)
-			const formattedAmount = formatBigInt(BigInt(amount), side == 'buy' ? SYNTHS_DECIMALS : currencyDecimals, side == 'buy' ? SYNTHS_PRECISION : DEFAULT_PRECISION);
+			const formattedAmount = formatBigInt(BigInt(amount), side == 'buy' ? SYNTHS_DECIMALS : BigInt(currencyDecimals), side == 'buy' ? SYNTHS_PRECISION : DEFAULT_PRECISION);
 			const formattedPrice = formatBigInt(BigInt(price), SYNTHS_DECIMALS, DEFAULT_PRECISION);
 
-			return Object.assign({}, transaction, {status: 'processed', outputAmount: formattedAmount, price: formattedPrice});
+			return Object.assign({}, order, {status: 'processed', outputAmount: formattedAmount, price: formattedPrice});
 
 		} else {
 			// order cancelled
@@ -198,11 +192,7 @@ export const orders = derived([transactions, recentEvents], ([$transactions, $re
 				reason
 			} = event;
 
-			if (queuedTransactions.delete(transaction.txhash)) {
-				showToast(reason);
-			}
-
-			return Object.assign({}, transaction, {status: 'cancelled', reason});
+			return Object.assign({}, order, {status: 'cancelled', reason});
 		}
 	});
 })

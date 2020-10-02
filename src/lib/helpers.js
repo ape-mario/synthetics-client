@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
-import { addresses, decimals } from '../stores/currencies.js'
-import { DEFAULT_DECIMALS } from './constants.js'
+import { addresses, decimals } from '../stores/currencies'
+import { DEFAULT_DECIMALS } from './constants'
 
 export function getCurrencyAddress(params) {
 	const { currency } = params;

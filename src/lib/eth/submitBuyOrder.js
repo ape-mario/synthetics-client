@@ -1,14 +1,14 @@
-import { contract, EMPTY_BYTES32, BIGINT_ZERO } from '../constants.js'
+import { contract, EMPTY_BYTES32, BIGINT_ZERO } from '../constants'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { addresses } from '../../stores/currencies.js'
-import { encodeMethodSignature, encodeBytes32, encodeAddress, encodeUint } from '../abi.js'
-import sign from './sign.js'
-import getNonce from './getNonce.js'
-import getName from './getName.js'
-import approveAmount from './approveAmount.js'
-import { getAssetsAllowance } from './getAllowance.js'
+import { user } from '../../stores/user'
+import { addresses } from '../../stores/currencies'
+import { encodeMethodSignature, encodeBytes32, encodeAddress, encodeUint } from '../abi'
+import sign from './sign'
+import getNonce from './getNonce'
+import getName from './getName'
+import approveAmount from './approveAmount'
+import { getAssetsAllowance } from './getAllowance'
 
 // submitBuyOrder(symbol: bytes32, payAmount: uint256, currency: address, deadline: uint256, v: uint8, r: bytes32, s: bytes32)
 const KECCAK_SUBMIT_BUY_ORDER = keccak256('submitBuyOrder(bytes32,uint256,address,uint256,uint8,bytes32,bytes32)');

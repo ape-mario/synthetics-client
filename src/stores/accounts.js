@@ -2,7 +2,7 @@ import { readable, writable, get, derived } from 'svelte/store'
 import { currencies, addresses, decimals, symbols } from './currencies'
 import { user } from './user'
 import { chainId } from './network'
-import { transactions, recentEvents } from './transactions'
+import { recentTransactions, latestEvents } from './transactions'
 import getBalance from '../lib/eth/getBalance'
 
 let defaultAccount = JSON.parse(localStorage.getItem('selected-currency') || null) || {currency: 'DAI'};
@@ -15,7 +15,7 @@ selectedAccount.setPersist = (obj) => {
 
 export const faucetUpdate = writable('');
 
-export const balances = derived([chainId, user, currencies, transactions, recentEvents, faucetUpdate], async ([$chainId, $user, $currencies, $transactions, $recentEvents, $faucetUpdate], set) => {
+export const balances = derived([chainId, user, currencies, recentTransactions, latestEvents, faucetUpdate], async ([$chainId, $user, $currencies, $recentTransactions, $latestEvents, $faucetUpdate], set) => {
 	if (!$chainId) return;
 	if (!$user) return;
 	if (!$currencies) return;

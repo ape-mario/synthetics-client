@@ -22,16 +22,16 @@
 	<div>
 		<!-- <span>{transaction.txhash.substring(0, 8)}</span> -->
 		{#if order.side == 'buy'}
-		<span>{order.amount} {order.currency} >> {order.outputAmount ? `${order.outputAmount} ` : ''}<strong>{order.product}</strong></span>
+		<span>{order.decimalAmount} {order.currency} >> {order.outputAmount ? `${order.outputAmount} ` : ''}<strong>{order.product}</strong></span>
 		{/if}
 		{#if order.side != 'buy'}
-		<span>{order.amount} <strong>{order.product}</strong> >> {order.outputAmount ? `${order.outputAmount} ` : ''}{order.currency}</span>
+		<span>{order.decimalAmount} <strong>{order.product}</strong> >> {order.outputAmount ? `${order.outputAmount} ` : ''}{order.currency}</span>
 		{/if}
 		{#if order.status == 'pending'}
 		<span>{order.status}</span>
 		{/if}
 		{#if order.status != 'pending'}
-		<span><a href={`${ETHERSCAN_URI[ethereum.chainId]}/tx/${order.txhash}`} target='_blank'>{order.status}</a></span>
+		<span>{#if order.status == 'cancelled'}<span class='has-tooltip' data-tooltip={order.reason} tabindex='0'>!!</span> {/if}<a href={`${ETHERSCAN_URI[ethereum.chainId]}/tx/${order.txhash}`} target='_blank'>{order.status}</a></span>
 		{/if}
 	</div>
 	{/each}

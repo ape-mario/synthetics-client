@@ -1,4 +1,4 @@
-import { contract, MAX_UINT256 } from '../constants.js'
+import { contract, MAX_UINT256 } from '../constants'
 import { splitSignature } from '@ethersproject/bytes'
 
 const EIP712Domain = [

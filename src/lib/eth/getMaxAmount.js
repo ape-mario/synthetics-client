@@ -1,6 +1,6 @@
 import { keccak256 } from 'js-sha3';
-import { contract } from '../constants.js'
-import { encodeMethodSignature, encodeBytes32, decodeUint } from '../abi.js'
+import { contract } from '../constants'
+import { encodeMethodSignature, encodeBytes32, decodeUint } from '../abi'
 
 const KECCAK_MAX_AMOUNT = keccak256('maxAmount(bytes32)');
 

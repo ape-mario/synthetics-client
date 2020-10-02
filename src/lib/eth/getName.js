@@ -1,6 +1,6 @@
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { encodeMethodSignature, decodeString } from '../abi.js'
+import { encodeMethodSignature, decodeString } from '../abi'
 
 const KECCAK_NAME = keccak256('name()');
 

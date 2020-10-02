@@ -79,17 +79,23 @@
     ethereum.on('disconnect', () => {
       // Disconnected from network, must reload the page to reconnect
       window.location.reload(); // reloads stores etc.
-      localStorage.removeItem('selected-account');
-      localStorage.removeItem('selected-product');
     });
 
+  }
+
+  function handleMetamaskDisconnected() {
+    localStorage.clear();
+    window.location.reload(false);
   }
 
   // For now, 'eth_accounts' will continue to always return an array
   function handleAccountsChanged(accounts) {
     // console.log('handleAccountsChanged', accounts);
     if (accounts.length === 0) {
-      user.set(null);
+      if ($user) {
+        user.set(null);
+        handleMetamaskDisconnected();
+      }
     } else if (accounts[0] !== $user) {
       user.set(accounts[0]);
     }
