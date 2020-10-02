@@ -9,11 +9,8 @@
 	import Toast from '../components/Toast.svelte'
 	import Footer from '../components/Footer.svelte'
 	import ModalContainer from '../components/ModalContainer.svelte'
-	import monitorEvents from '../lib/monitor/monitorEvents.js'
 	import { selectedProduct } from '../stores/products.js'
 	import { selectedAccount } from '../stores/accounts.js'
-
-	$: monitorEvents();
 
 </script>
 

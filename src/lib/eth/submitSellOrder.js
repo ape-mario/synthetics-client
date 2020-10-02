@@ -1,14 +1,14 @@
-import { contract, EMPTY_BYTES32, BIGINT_ZERO } from '../constants.js'
+import { contract, EMPTY_BYTES32, BIGINT_ZERO } from '../constants'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { addresses } from '../../stores/currencies.js'
-import { encodeMethodSignature, encodeBytes32, encodeAddress, encodeUint } from '../abi.js'
-import sign from './sign.js'
-import getNonce from './getNonce.js'
-import getName from './getName.js'
-import getDomainSeparator from './getDomainSeparator.js'
-import { getAssetsAllowance } from './getAllowance.js'
+import { user } from '../../stores/user'
+import { addresses } from '../../stores/currencies'
+import { encodeMethodSignature, encodeBytes32, encodeAddress, encodeUint } from '../abi'
+import sign from './sign'
+import getNonce from './getNonce'
+import getName from './getName'
+import getDomainSeparator from './getDomainSeparator'
+import { getAssetsAllowance } from './getAllowance'
 
 // submitSellOrder(bytes32 symbol, uint256 amountToBurn, address currency, uint256 deadline, uint8 v, bytes32 r, bytes32 s)
 const KECCAK_SUBMIT_SELL_ORDER = keccak256('submitSellOrder(bytes32,uint256,address,uint256,uint8,bytes32,bytes32)');

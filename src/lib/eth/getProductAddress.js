@@ -1,7 +1,7 @@
-import { contract } from '../constants.js'
+import { contract } from '../constants'
 import { keccak256 } from 'js-sha3'
-import { user } from '../../stores/user.js'
-import { encodeMethodSignature, encodeBytes32, decodeAddress } from '../abi.js'
+import { user } from '../../stores/user'
+import { encodeMethodSignature, encodeBytes32, decodeAddress } from '../abi'
 
 const KECCAK_TOKEN = keccak256('token(bytes32)');
 

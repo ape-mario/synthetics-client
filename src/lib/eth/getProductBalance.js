@@ -1,8 +1,8 @@
-import { contract } from '../constants.js'
+import { contract } from '../constants'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { encodeMethodSignature, encodeBytes32, encodeAddress } from '../abi.js'
+import { user } from '../../stores/user'
+import { encodeMethodSignature, encodeBytes32, encodeAddress } from '../abi'
 
 const KECCAK_BALANCE = keccak256('balanceOf(bytes32,address)');
 

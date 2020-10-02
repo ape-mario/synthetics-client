@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store'
 import { user } from './user'
 import { chainId } from './network'
-import { transactions, recentEvents } from './transactions'
+import { recentTransactions, latestEvents } from './transactions'
 import getMaxAmount from '../lib/eth/getMaxAmount'
 import getProducts from '../lib/eth/getProducts'
 import getProductBalance from '../lib/eth/getProductBalance'
@@ -35,7 +35,7 @@ export const selectedProductMaxAmount = derived([chainId, selectedProduct], asyn
 	set(maxAmount);
 });
 
-export const selectedProductBalance = derived([chainId, selectedProduct, user, transactions, recentEvents], async ([$chainId, $selectedProduct, $user, $transactions, $recentEvents], set) => {
+export const selectedProductBalance = derived([chainId, selectedProduct, user, recentTransactions, latestEvents], async ([$chainId, $selectedProduct, $user, $recentTransactions, $latestEvents], set) => {
 	if (!$chainId) return;
 	if (!$selectedProduct) return;
 	if (!$user) return;

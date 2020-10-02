@@ -1,24 +1,29 @@
-const filter_cache = {}
+import { keccak256 } from 'js-sha3';
+
+const cache = {}
 
 export default function newFilter(params) {
 
 	const {
 		fromBlock,
-		addresses
+		addresses,
+		topics
 	} = params;
 
-	const key = addresses.sort().join(',');
+	const address = addresses.sort().join(',');
+	const key = keccak256(JSON.stringify([fromBlock, address, topics]));
 
-	if (filter_cache[key]) return Promise.resolve(filter_cache[key]);
+	if (cache[key]) return Promise.resolve(cache[key]);
 
 	return ethereum.request({
 		method: 'eth_newFilter',
 		params: [{
 			fromBlock,
-			address: addresses
+			address,
+			topics
 		}]
 	}).then((filter_id) => {
-		filter_cache[key] = filter_id;
+		cache[key] = filter_id;
 		return filter_id;
 	});
 

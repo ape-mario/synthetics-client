@@ -1,8 +1,8 @@
-import { contract } from '../constants.js'
+import { contract } from '../constants'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { encodeMethodSignature, encodeAddress, encodeUint } from '../abi.js'
+import { user } from '../../stores/user'
+import { encodeMethodSignature, encodeAddress, encodeUint } from '../abi'
 
 const KECCAK_APPROVE = keccak256('approve(address,uint256)');
 

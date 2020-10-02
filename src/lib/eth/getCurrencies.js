@@ -1,6 +1,6 @@
 import { keccak256 } from 'js-sha3';
-import { contract } from '../constants.js'
-import { encodeMethodSignature, decodeAddressArray } from '../abi.js'
+import { contract } from '../constants'
+import { encodeMethodSignature, decodeAddressArray } from '../abi'
 
 const KECCAK_GET_CURRENCIES = keccak256('getCurrencies()');
 

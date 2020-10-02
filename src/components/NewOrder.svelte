@@ -30,7 +30,8 @@
 			amount,
 			decimals: getDecimals(),
 			side: $selectedSide,
-			currency
+			currency,
+			currencyDecimals: getCurrencyDecimals(selectedAccount)
 		});
 
 		amount = undefined;

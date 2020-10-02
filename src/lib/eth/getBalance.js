@@ -1,7 +1,7 @@
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { encodeMethodSignature, encodeAddress } from '../abi.js'
+import { user } from '../../stores/user'
+import { encodeMethodSignature, encodeAddress } from '../abi'
 
 const KECCAK_BALANCE = keccak256('balanceOf(address)');
 

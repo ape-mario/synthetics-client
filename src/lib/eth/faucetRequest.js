@@ -1,8 +1,8 @@
-import { contract } from '../constants.js'
+import { contract } from '../constants'
 import { keccak256 } from 'js-sha3';
 import { get } from 'svelte/store'
-import { user } from '../../stores/user.js'
-import { encodeMethodSignature } from '../abi.js'
+import { user } from '../../stores/user'
+import { encodeMethodSignature } from '../abi'
 
 const KECCAK_FAUCET_REQUEST = keccak256('faucetRequest()');
 
