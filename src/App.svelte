@@ -52,14 +52,16 @@
 		background: var(--bg-color);
 		font-size: 22px;
 		font-family: 'Roboto', serif;
+		color: var(--color-white);
 	}
 	:global(:root) {
 		--color-main: red;
 		--base-padding: 20px;
 		--color-green: #00CF29;
 		--color-blue: #0000EE;
+		--color-white: #FFFFFF;
 		--border-color: #c8c8c8;
-		--bg-color: #e1e1e1;
+		--bg-color: #12182c;
 		--container-width: 520px;
 	}
 	/* add class dark to body to update theme */
@@ -70,7 +72,7 @@
 		margin: 15px 0;
 	}
 	:global(a) {
-		color: var(--color-blue);
+		color: var(--color-green);
 		text-decoration: underline;
 		cursor: pointer;
 		text-transform: capitalize;

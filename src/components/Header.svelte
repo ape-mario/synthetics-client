@@ -7,7 +7,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 3px solid var(--border-color);
 		position: relative;
 		z-index: 12;
 	}
@@ -18,7 +17,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		margin-right: 5px;
+		margin-left: 25px;
 	}
 	.logo img {
 		height: 25px;

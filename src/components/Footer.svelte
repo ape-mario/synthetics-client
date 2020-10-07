@@ -4,9 +4,11 @@
 
 <style>
 	footer {
+		position:absolute;
+		bottom:0;
+		width:100%;
 		text-align: center;
 		padding: 15px 0;
-		border-top: 3px solid var(--border-color);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

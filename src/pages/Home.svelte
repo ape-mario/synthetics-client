@@ -19,28 +19,30 @@
 		color: var(--color-main);
 	}
 	.container {
+		background-color: #212845;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		padding: 30px;
 		width: 100%;
 		max-width: var(--container-width);
-		margin: 0 auto;
-		padding: var(--base-padding);
-		position: relative;
 	}
 	.body-container {
 		position: relative;
 		margin: 0;
-		min-height: 700px;
 	}
 </style>
 
+<Header/>
 <div class='container'>
 	<Toast/>
-	<Header/>
 		<div class='body-container'>
 			<ModalContainer/>
 			<NewOrder selectedProduct={$selectedProduct} selectedAccount={$selectedAccount} />
 			<Account/>
 			<Transactions/>
 		</div>
-	<Footer/>
 </div>
+<Footer/>
 

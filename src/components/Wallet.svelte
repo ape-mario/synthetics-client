@@ -136,5 +136,5 @@
 {#if $user}
   <div>✔ {$minified_user}</div>
 {:else}
-  <div><a on:click={connect}>Connect Metamask</a></div>
+  <div style="margin-right: 25px;text-align: right;"><a on:click={connect}>Connect Metamask</a></div>
 {/if}

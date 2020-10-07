@@ -17,7 +17,8 @@
 		outline: none;
 		border: 1px solid rgb(118,118,118);
 		border-radius: 3px;
-		background: rgb(239, 239, 239);
+		background: var(--color-green);
+		color: var(--color-white);
 	}
 	button:hover {
 		background: rgb(233, 233, 233);
