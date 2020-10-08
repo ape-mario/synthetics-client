@@ -21,7 +21,7 @@
 		color: var(--color-white);
 	}
 	button:hover {
-		background: rgb(233, 233, 233);
+		background: rgb(0 153 31);
 	}
 	button:active {
 		background: rgb(209, 209, 209);

@@ -13,6 +13,7 @@
 		background-color: var(--bg-color);
 		width: 100%;
 		height: 100%;
+		padding:30px;
 		position: absolute;
 		top: 0;
 		left: 0;

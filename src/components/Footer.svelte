@@ -16,11 +16,24 @@
 	footer a {
 		color: var(--color-green);
 	}
+
+	.network-type{
+		margin-left:25px;
+		text-align:left;
+		font-size:1rem;
+	}
+
+	.external-links {
+		margin-right:25px;
+		text-align:right;
+		font-size:1rem;
+	}
+
 </style>
 
 <footer>
-	<span>Cap (Ropsten testnet)</span>
-	<span>
+	<span class="network-type">Cap (Ropsten testnet)</span>
+	<span class="external-links">
 		<a href='https://t.me/capfin' target='_blank'>Telegram</a>, <a href='https://blog.cap.finance' target='_blank'>Blog</a>, <a href='https://twitter.com/CapDotFinance' target='_blank'>Twitter</a>
 	</span>
 </footer>

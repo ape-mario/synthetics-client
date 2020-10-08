@@ -41,7 +41,7 @@
 </script>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
 	:global(html.loading) {
 		cursor: progress !important;
 	}
@@ -51,7 +51,7 @@
 	:global(body) {
 		background: var(--bg-color);
 		font-size: 22px;
-		font-family: 'Roboto', serif;
+		font-family: 'Heebo', sans-serif;
 		color: var(--color-white);
 	}
 	:global(:root) {
@@ -73,7 +73,7 @@
 	}
 	:global(a) {
 		color: var(--color-green);
-		text-decoration: underline;
+		text-decoration: none;
 		cursor: pointer;
 		text-transform: capitalize;
 	}
