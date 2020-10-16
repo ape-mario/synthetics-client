@@ -5,7 +5,7 @@ const CONTRACTS = {
 		CAP_ASSETS: ''
 	},
 	'0x3': {
-		CAP_ASSETS: '0x96295783DfF6e0072CcE3d5745069D9d0A2b6d2f'.toLowerCase()
+		CAP_ASSETS: '0x75C764B7A673e2877eA3178E63B958dD67eCFab4'.toLowerCase()
 	},
 	'0x2a': {
 		CAP_ASSETS: ''
