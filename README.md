@@ -1,5 +1,8 @@
 # synthetics-client
 
+#### Try it here
+https://capsynth.netlify.app/
+
 #### Install
 ```bash
 # make sure you're using node 12
