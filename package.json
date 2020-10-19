@@ -4,10 +4,13 @@
   "description": "Cap Synthetics client",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "rollup -c && npm run build:tailwind",
+    "dev": "concurrently \"rollup -c -w\" \"npm run watch:tailwind\"",
     "devipfs": "npm run build && ipd build",
-    "start": "sirv build --single"
+    "start": "sirv build --single",
+    "watch:tailwind": "postcss public/tailwind.css -o public/index.css -w",
+    "build:tailwind": "cross-env NODE_ENV=production postcss public/tailwind.css -o public/index.css",
+    "serve": "serve public -p 80"
   },
   "author": "cap.finance",
   "license": "MIT",
@@ -15,14 +18,19 @@
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-html": "^0.2.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
+    "autoprefixer": "^9.7.5",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
     "npm-run-all": "^4.1.5",
+    "postcss-cli": "^8.1.0",
     "rollup": "^2.26.10",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "sirv-cli": "^1.0.6",
-    "svelte": "^3.24.1"
+    "svelte": "^3.24.1",
+    "tailwindcss": "^1.9.4"
   },
   "dependencies": {
     "@ethersproject/bytes": "^5.0.4",

@@ -61,16 +61,24 @@
 	
 </style>
 
-<DataTable title={'Account (' + $selectedAccount.currency + ')'} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { sendFaucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
-	<div>
-		<span class='has-tooltip' data-tooltip='Current wallet balance.' tabindex='0'>Balance</span>
-		<span>{getFormattedBalance($selectedAccount, $balances, $decimals, $addresses)}</span>
+<div class="grid lg:grid-cols-2 gap-4">
+	<div class="flex flex-col md:p-4 shadow-lg">
+		<DataTable title={$selectedAccount.currency} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { sendFaucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
+			<div class="m-0">
+				<span class='has-tooltip' data-tooltip='Current wallet balance.' tabindex='0'>Balance</span>
+				<span>{getFormattedBalance($selectedAccount, $balances, $decimals, $addresses)}</span>
+			</div>
+		</DataTable>
 	</div>
-</DataTable>
+	<div class="flex flex-col md:p-4 shadow-lg">
+		<DataTable title={$selectedProduct.product} action={{name: ($selectedProductAddress || '').substring(0, 9), handler: () => { watchAssetAction($selectedProduct, $selectedProductAddress) }}}>
+			<div class="m-0">
+				<span class='has-tooltip' data-tooltip='Current product balance.' tabindex='0'>Balance</span>
+				<span>{$selectedProductBalance != undefined && formatBigInt($selectedProductBalance || BIGINT_ZERO, SYNTHS_DECIMALS, SYNTHS_PRECISION) || '...'}</span>
+			</div>
+		</DataTable>
+	</div>
+</div>
 
-<DataTable title={'Account (' + $selectedProduct.product + ')'} action={{name: ($selectedProductAddress || '').substring(0, 9), handler: () => { watchAssetAction($selectedProduct, $selectedProductAddress) }}}>
-	<div>
-		<span class='has-tooltip' data-tooltip='Current product balance.' tabindex='0'>Balance</span>
-		<span>{$selectedProductBalance != undefined && formatBigInt($selectedProductBalance || BIGINT_ZERO, SYNTHS_DECIMALS, SYNTHS_PRECISION) || '...'}</span>
-	</div>
-</DataTable>
+
+

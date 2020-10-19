@@ -10,6 +10,7 @@
 
 <style>
 	input {
+		background-color: #000;
 		width: 100%;
 		font-size: 20px;
 		padding: 0 8px;
@@ -19,8 +20,8 @@
 		border-radius: 3px;
 	}
 	input:focus {
-		border-color: var(--color-blue);
-		box-shadow: inset 0 0 0 1px var(--color-blue);
+		border-color: var(--color-dark-green);
+		box-shadow: inset 0 0 0 1px var(--color-dark-green);
 	}
 </style>
 

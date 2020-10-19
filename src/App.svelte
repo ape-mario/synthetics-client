@@ -41,7 +41,7 @@
 </script>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
 	:global(html.loading) {
 		cursor: progress !important;
 	}
@@ -51,17 +51,18 @@
 	:global(body) {
 		background: var(--bg-color);
 		font-size: 22px;
-		font-family: 'Heebo', sans-serif;
+		font-family: 'IBM Plex Mono', monospace;
 		color: var(--color-white);
 	}
 	:global(:root) {
 		--color-main: red;
 		--base-padding: 20px;
+		--color-dark-green: #224c2d;
 		--color-green: #00CF29;
 		--color-blue: #0000EE;
 		--color-white: #FFFFFF;
 		--border-color: #c8c8c8;
-		--bg-color: #12182c;
+		--bg-color: #000;
 		--container-width: 520px;
 	}
 	/* add class dark to body to update theme */
@@ -84,6 +85,7 @@
 
 	/* tooltip */
 	:global(.has-tooltip) {
+		color:#7e7e7e;
 		cursor: help;
 		position: relative;
 		outline: none;

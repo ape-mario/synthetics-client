@@ -19,7 +19,6 @@
 		color: var(--color-main);
 	}
 	.container {
-		background-color: #212845;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -33,6 +32,8 @@
 		margin: 0;
 	}
 </style>
+
+<link rel='stylesheet' href='/index.css'> 
 
 <Header/>
 <div class='container'>

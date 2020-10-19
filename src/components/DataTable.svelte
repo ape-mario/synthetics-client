@@ -13,22 +13,22 @@
 		justify-content: space-between;
 		align-items: center;
 		margin: 0;
-		border-bottom: 1px solid var(--border-color);
-		border-top: 1px solid var(--border-color);
+		/* border-bottom: 1px solid var(--border-color); */
+		/* border-top: 1px solid var(--border-color); */
 	}
 	.header.separator {
-		border-top: 3px solid var(--border-color);
+		/* border-top: 3px solid var(--border-color); */
 	}
 	.header .action {
 		cursor: pointer;
 		text-decoration: underline;
 	}
-	.table {
+	/* .table {
 		margin: 0;
-	}
+	} */
 	.table > :global(div) {
-		border-bottom: 1px solid var(--border-color);
-		padding: 15px 0;
+		/* border-bottom: 1px solid var(--border-color); */
+		/* padding: 15px 0; */
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -49,13 +49,13 @@
 
 {#if title}
 <div class={separator ? 'header separator' : 'header'}>
-	<div><strong>{title}</strong></div>
+	<strong>{title}</strong>
 	{#if action}
 		<div class='action' on:click={action.handler}>{action.name}</div>
 	{/if}
 </div>
 {/if}
 
-<div class='table'>
+<div class='table mt-0 mb-1' style="width:100%">
 	<slot></slot>
 </div>

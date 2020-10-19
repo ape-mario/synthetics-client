@@ -26,10 +26,17 @@
 	}
 </style>
 
-<header>
-	<div class='logo-container'>
+<header class="flex flex-row mx-8 lg:mx-12 md:py-8 mb-12 text-white justify-between">
+
+	<div class="flex flex-col space-y-1 items-start">
+		<img src="/assets/logo-pure.svg" alt="logo" class="w-16">
+		<h1 class="text-xl font-thin">SYNTHETICS</h1>
+		<span class="text-white text-xs p-0 px-2 bg-green-900 mt-6 inline-block opacity-50">ROPSTEN</span>
+	</div>
+
+	<!-- <div class='logo-container'>
 		<span class='logo'><img alt='Cap Logo' src='/assets/logo-pure.svg' /></span>
 		<span><strong>Synthetics</strong></span>
-	</div>
+	</div> -->
 	<Wallet/>
 </header>
