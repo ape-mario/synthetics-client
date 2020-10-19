@@ -7,6 +7,8 @@ import { formatBigInt } from '../lib/decimals'
 import { DEFAULT_PRECISION, SYNTHS_DECIMALS, SYNTHS_PRECISION } from '../lib/constants'
 import { ORDER_SUBMITTED_EVENT_TYPES } from '../lib/eventHelpers'
 
+export const queuedFirstBlockNumber = writable('latest');
+
 // latestEvents are polled from the blockchain at an interval
 export const latestEvents = writable({});
 latestEvents.addEvents = function (new_events) {
@@ -105,6 +107,7 @@ export const recentTransactions = derived(pendingTransactions, ($pendingTransact
 		const _transactions = results.map((result, index) => {
 			let status = 'N/A';
 			let id = null;
+			let blockNumber = null;
 			if (result.status === 'fulfilled') {
 				const tx_receipt = result.value;
 				if (tx_receipt) {
@@ -116,8 +119,7 @@ export const recentTransactions = derived(pendingTransactions, ($pendingTransact
 
 					const {
 						logs,
-						gasUsed,
-						blockNumber
+						gasUsed
 					} = tx_receipt;
 
 					// not pending
@@ -130,12 +132,15 @@ export const recentTransactions = derived(pendingTransactions, ($pendingTransact
 						id = BigInt(orderSubmittedEventLogs[0].data.slice(0, 2 + 64)).toString();
 					}
 
+					// store blockNumber
+					blockNumber = tx_receipt.blockNumber;
+
 				} else {
 					isPending = true;
 					status = 'pending';
 				}
 			}
-			return Object.assign({}, transactions[index], { status, id });
+			return Object.assign({}, transactions[index], { status, id, blockNumber });
 		});
 
 		set(_transactions);
@@ -163,11 +168,17 @@ export const orders = derived([latestOrders, latestEvents, recentTransactions], 
 		return BigInt(a.id || -1n) > BigInt(b.id || -1n)
 	}).slice(0, 10);
 
-	return allOrders.map(function (order) {
+	let _queuedFirstBlockNumber = 'latest';
+	const result = allOrders.map(function (order) {
 		if (!$latestEvents || !order.id) return order;
 
 		const event = $latestEvents[order.id];
-		if (!event) return Object.assign({}, order, {status: 'queued'});
+		if (!event) {
+			if (_queuedFirstBlockNumber === 'latest' || BigInt(_queuedFirstBlockNumber) > BigInt(order.blockNumber)) {
+				_queuedFirstBlockNumber = order.blockNumber;
+			}
+			return Object.assign({}, order, {status: 'queued'});
+		}
 
 		if (event.processed) {
 			// order processed
@@ -195,4 +206,7 @@ export const orders = derived([latestOrders, latestEvents, recentTransactions], 
 			return Object.assign({}, order, {status: 'cancelled', reason});
 		}
 	});
+
+	queuedFirstBlockNumber.set(_queuedFirstBlockNumber);
+	return result;
 })

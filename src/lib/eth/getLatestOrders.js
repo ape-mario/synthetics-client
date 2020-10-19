@@ -1,8 +1,10 @@
 import { contract } from '../constants'
+import { get } from 'svelte/store'
 import getFilterLogs from './getFilterLogs'
 import getFilterChanges from './getFilterChanges'
 import getBlockByNumber from './getBlockByNumber'
 import { extractLogData, formatUser, enrichOrderSubmittedEventData, EVENT_TYPES, ORDER_SUBMITTED_EVENT_TYPES, PROCESSING_EVENT_TYPES } from '../eventHelpers'
+import { queuedFirstBlockNumber } from '../../stores/transactions.js'
 
 const LIMIT = 10;
 const BLOCK_COUNT = 777600n;
@@ -25,7 +27,8 @@ export async function getLatestOrders(params) {
 
 export async function getLatestOrderUpdates(params) {
 	const { user } = params;
-	const logs = await getFilterChanges({ fromBlock: 'latest', addresses: [ contract('CAP_ASSETS') ], topics: [PROCESSING_EVENT_TYPES, formatUser(user)] });
+	const fromBlock = get(queuedFirstBlockNumber);
+	const logs = await getFilterChanges({ fromBlock, addresses: [ contract('CAP_ASSETS') ], topics: [PROCESSING_EVENT_TYPES, formatUser(user)] });
 	const processingEvents = Object.assign({}, ...logs.map(extractLogData));
 	return {
 		processed: processingEvents
