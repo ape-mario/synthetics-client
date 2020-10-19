@@ -17,7 +17,7 @@ export const products = derived([chainId], async ([$chainId], set) => {
 	});
 });
 
-let defaultAccount = JSON.parse(localStorage.getItem('selected-product') || null) || {product: 'AAPL'};
+let defaultAccount = JSON.parse(localStorage.getItem('selected-product') || null) || {product: 'BTC'};
 export const selectedProduct = writable(defaultAccount);
 
 selectedProduct.setPersist = (obj) => {
