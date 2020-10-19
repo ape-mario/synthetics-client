@@ -37,7 +37,7 @@
 		amount = undefined;
 	}
 
-	async function validateInput() {
+	function validateInput() {
 		if (input) {
 			if (input.validity.patternMismatch || input.validity.valueMissing) return true;
 
@@ -65,6 +65,7 @@
 		} else {
 			amount = formatBigInt($selectedProductBalance, SYNTHS_DECIMALS, SYNTHS_DECIMALS);
 		}
+		validateInput();
 	}
 
 	function toggleSide() {
@@ -82,7 +83,8 @@
 
 	$: {
 		// validate input on every selectedProduct or selectedAccount change
-		validateInput();
+		// referencing selectedProduct & selectedAccount is required to refresh correctly
+		validateInput({ selectedProduct, selectedAccount });
 	}
 
 </script>
