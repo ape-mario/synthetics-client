@@ -50,7 +50,7 @@
 	}
 	:global(body) {
 		background: var(--bg-color);
-		font-size: 22px;
+		font-size: 16px;
 		font-family: 'IBM Plex Mono', monospace;
 		color: var(--color-white);
 	}
