@@ -62,7 +62,7 @@
 </style>
 
 <div class="grid lg:grid-cols-2 gap-4">
-	<div class="flex flex-col md:p-4 shadow-lg">
+	<div class="flex flex-col sm:p-1 md:p-4 shadow-lg">
 		<DataTable title={$selectedAccount.currency} separator={true} action={ {name: ($chainId != '0x1' ? 'faucet' : ''), handler: () => { sendFaucetRequest({address: $addresses[$selectedAccount.currency]}) }}}>
 			<div class="m-0">
 				<span class='has-tooltip' data-tooltip='Current wallet balance.' tabindex='0'>Balance</span>
@@ -70,7 +70,7 @@
 			</div>
 		</DataTable>
 	</div>
-	<div class="flex flex-col md:p-4 shadow-lg">
+	<div class="flex flex-col sm:p-1 md:p-4 shadow-lg">
 		<DataTable title={$selectedProduct.product} action={{name: ($selectedProductAddress || '').substring(0, 9), handler: () => { watchAssetAction($selectedProduct, $selectedProductAddress) }}}>
 			<div class="m-0">
 				<span class='has-tooltip' data-tooltip='Current product balance.' tabindex='0'>Balance</span>

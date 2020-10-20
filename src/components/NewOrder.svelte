@@ -105,12 +105,14 @@
 	}
 </style>
 
-<div>
+<div class="mb-5">
 	<a class="underline" on:click={toggleSide}>{$selectedSide == 'buy' ? 'Buy' : 'Sell'}</a> › <a class="underline" on:click={showProducts}>{selectedProduct.product}</a> {$selectedSide == 'buy' ? 'with' : 'for'} <a class="underline" on:click={showAccounts}>{selectedAccount.currency}</a>
 </div>
-<form on:submit|preventDefault={submitOrder} on:invalid={validateInput} on:changed={validateInput} on:input={validateInput}>
-<div class='input-container'>
-	<Input bind:element={input} placeholder={'0.0 ' + ($selectedSide == 'buy' ? selectedAccount.currency : selectedProduct.product)} bind:value={amount} /><a on:click={setMax}><span class='input-label'>MAX</span></a>
-</div>
-<div><Button text={($selectedSide == 'buy' ? 'Buy' : 'Sell') + " " + selectedProduct.product} /></div>
+<form class="mb-5" on:submit|preventDefault={submitOrder} on:invalid={validateInput} on:changed={validateInput} on:input={validateInput}>
+	<div class="input-container mb-3">
+		<Input bind:element={input} placeholder={'0.0 ' + ($selectedSide == 'buy' ? selectedAccount.currency : selectedProduct.product)} bind:value={amount} /><a on:click={setMax}><span class='input-label'>MAX</span></a>
+	</div>
+	<div>
+		<Button text={($selectedSide == 'buy' ? 'Buy' : 'Sell') + " " + selectedProduct.product} />
+	</div>
 </form>

@@ -19,13 +19,13 @@
 {#if $orders && $orders.length}
 <DataTable title={'Recent Orders'} separator={true}>
 	{#each $orders as order}
-	<div>
+	<div class="mb-2">
 		<!-- <span>{transaction.txhash.substring(0, 8)}</span> -->
 		{#if order.side == 'buy'}
-		<span>{order.decimalAmount} {order.currency} >> {order.outputAmount ? `${order.outputAmount} ` : ''}<strong>{order.product}</strong></span>
+		<span>{order.decimalAmount} {order.currency} &rarr; {order.outputAmount ? `${order.outputAmount} ` : ''}<strong>{order.product}</strong></span>
 		{/if}
 		{#if order.side != 'buy'}
-		<span>{order.decimalAmount} <strong>{order.product}</strong> >> {order.outputAmount ? `${order.outputAmount} ` : ''}{order.currency}</span>
+		<span>{order.decimalAmount} <strong>{order.product}</strong> &rarr; {order.outputAmount ? `${order.outputAmount} ` : ''}{order.currency}</span>
 		{/if}
 		{#if order.status == 'pending'}
 		<span>{order.status}</span>

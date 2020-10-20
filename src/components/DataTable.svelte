@@ -33,7 +33,7 @@
 		justify-content: space-between;
 		align-items: center;
 		line-height: 1.3;
-		margin: 0;
+		/* margin: 0; */
 	}
 	.table > :global(div:hover) {
 

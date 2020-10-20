@@ -69,9 +69,9 @@
 	:global(.dark) {
 		--color-main: blue;
 	}
-	:global(div) {
+	/* :global(div) {
 		margin: 15px 0;
-	}
+	} */
 	:global(a) {
 		color: var(--color-green);
 		text-decoration: none;

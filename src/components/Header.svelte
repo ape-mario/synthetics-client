@@ -26,7 +26,7 @@
 	}
 </style>
 
-<header class="flex flex-row mx-8 lg:mx-12 md:py-8 mb-12 text-white justify-between">
+<header class="flex flex-row mx-8 lg:mx-12 py-8 mb-12 text-white justify-between">
 
 	<div class="flex flex-col space-y-1 items-start">
 		<img src="/assets/logo-pure.svg" alt="logo" class="w-16">
