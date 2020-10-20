@@ -24,9 +24,9 @@
 	}
 
 	.external-links {
-		margin-right:25px;
+		/* margin-right:25px; */
 		text-align:right;
-		font-size:1rem;
+		font-size:0.75rem;
 	}
 
 </style>
@@ -34,6 +34,6 @@
 <footer>
 	<!-- <span class="network-type">Cap (Ropsten testnet)</span> -->
 	<span class="external-links" style="text-align:center;">
-		<a href='https://gov.cap.uly.dev/' target='_blank'>Governance</a> | <a href='https://t.me/capfin' target='_blank'>Telegram</a> | <a href='https://blog.cap.finance' target='_blank'>Blog</a> | <a href='https://twitter.com/CapDotFinance' target='_blank'>Twitter</a>
+		<a href='https://gov.cap.uly.dev/' target='_blank'>Governance</a> | <a href='https://github.com/capfina' target='_blank'>Github</a> | <a href='https://t.me/capfin' target='_blank'>Telegram</a> | <a href='https://blog.cap.finance' target='_blank'>Blog</a> | <a href='https://twitter.com/CapDotFinance' target='_blank'>Twitter</a>
 	</span>
 </footer>
